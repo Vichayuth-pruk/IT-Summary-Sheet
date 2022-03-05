@@ -3,8 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-  const token =
-    req.body.token || req.query.token || req.headers.token;
+  const token = req.body.token || req.query.token || req.headers.token;
 
   if (!token) {
     res.status(403).json({
@@ -25,4 +24,4 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = verifyToken
+module.exports = verifyToken;
