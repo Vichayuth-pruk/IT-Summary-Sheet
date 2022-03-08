@@ -1,41 +1,54 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Index from "@/views/Index.vue";
-import Signin from "@/views/Signin.vue";
-import Signup from "@/views/Signup.vue";
-import Profile from "@/views/Profile.vue";
-import Findsheet from "@/views/Findsheet.vue";
+import Swal from "sweetalert2";
 
 const routes = [
   {
     path: "/",
-    name: "Index",
-    component: Index,
+    name: "Home",
+    component: () => import("../views/Home.vue"),
   },
   {
     path: "/signup",
     name: "Signup",
-    component: Signup,
+    meta: { guess: true },
+    component: () => import("../views/Signup.vue"),
   },
   {
     path: "/signin",
     name: "Signin",
-    component: Signin,
+    meta: { guess: true },
+    component: () => import("../views/Signin.vue"),
   },
   {
     path: "/profile",
     name: "Profile",
-    component: Profile,
-  },
-  {
-    path: "/findsheet",
-    name: "Findsheet",
-    component: Findsheet,
+    meta: { login: true },
+    component: () => import("../views/Profile.vue"),
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  if (to.meta.login && !isLoggedIn) {
+    Swal.fire({
+      title: "โปรดลงชื่อเข้าสู่ระบบ",
+      icon: "warning",
+      showConfirmButton: true,
+    });
+    next({ path: "/signin" });
+    return;
+  }
+  if (to.meta.guess && isLoggedIn) {
+    next({ path: "/" });
+    return;
+  }
+  next();
 });
 
 export default router;

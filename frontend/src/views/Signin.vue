@@ -10,23 +10,29 @@
           <input
             type="email"
             class="form-control"
+            :class="{ 'is-invalid': v$.signin.email.$error }"
             v-model="signin.email"
             placeholder="อีเมล"
             name="email"
             aria-describedby="email"
-            required
           />
+          <div v-if="v$.signin.email.$error" class="my-2 text-danger">
+            โปรดป้อนอีเมลให้ถูกต้อง
+          </div>
         </div>
         <div class="mb-3">
           <label class="form-label" for="password">รหัสผ่าน</label>
           <input
             type="password"
             class="form-control"
+            :class="{ 'is-invalid': v$.signin.password.$error }"
             v-model="signin.password"
             placeholder="รหัสผ่าน"
             name="password"
-            required
           />
+          <div v-if="v$.signin.password.$error" class="my-2 text-danger">
+            โปรดป้อนรหัสผ่าน
+          </div>
         </div>
         <div class="mb-3 text-center">
           <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
@@ -42,11 +48,13 @@
 <script>
 import Swal from "sweetalert2";
 import axios from "axios";
-import { HTTP, SERVER_IP, PORT } from "../assets/js/SERVER_IP";
+import useVuelidate from "@vuelidate/core";
+import { required, email, maxLength } from "@vuelidate/validators";
 
 export default {
   data() {
     return {
+      v$: useVuelidate(),
       signin: {
         email: "",
         password: "",
@@ -54,36 +62,44 @@ export default {
     };
   },
   methods: {
-    SubmitSignin() {
+    submitSignin() {
       axios
-        .post(`${HTTP}://${SERVER_IP}:${PORT}/signin`, this.signin)
+        .post("http://localhost:3001/user/signin", this.signin)
         .then((res) => {
-          const data = res.data;
-          if (data.status) {
-            localStorage.setItem("token", data.user.token);
+          if (res.data.status) {
+            const token = res.data.token;
+            localStorage.setItem("token", token);
+            this.$emit('auth-change')
             this.$router.push("/");
           } else {
             Swal.fire({
               title: "ไม่สำเร็จ",
-              text: data.alert,
+              text: res.data.message,
               icon: "error",
               timer: 3000,
               showConfirmButton: false,
             });
+            this.signup.password = "";
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error);
         });
     },
     validateSignin() {
-      this.SubmitSignin();
+      this.v$.$validate();
+      if (!this.v$.$error) {
+        this.submitSignin();
+      }
     },
   },
-  created() {
-    if (localStorage.getItem("token") !== null) {
-        this.$router.push('/')
-    }
+  validations() {
+    return {
+      signin: {
+        email: { required, email, maxLength: maxLength(50) },
+        password: { required },
+      },
+    };
   },
 };
 </script>

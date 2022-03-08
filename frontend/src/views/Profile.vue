@@ -5,12 +5,14 @@
 </template>
 <script>
 export default {
+  name: "Profile",
+  props: {
+    user: { type: Object }
+  },
   data() {
     return {};
   },
   methods: {},
-  created() {
-    this.$root.authentication(true);
-  },
+  created() {},
 };
 </script>

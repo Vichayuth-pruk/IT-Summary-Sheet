@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Nav bar -->
     <nav
       class="navbar navbar-expand-lg navbar-dark"
       style="background-color: #1fab89"
@@ -26,7 +25,7 @@
         >
           <div class="container">
             <ul class="navbar-nav mb-2 mb-lg-0">
-              <template v-if="!isLoggedIn">
+              <template v-if="!user">
                 <li class="nav-item">
                   <router-link class="nav-link" to="/signup">
                     <span class="badge bg-success">ลงทะเบียนใช้งาน</span>
@@ -45,11 +44,12 @@
                 >
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="/findsheet"
-                  ><i class="fa-solid fa-magnifying-glass"></i> ค้นหาชีท</router-link
+                <router-link class="nav-link" to=""
+                  ><i class="fa-solid fa-magnifying-glass"></i>
+                  ค้นหาชีท</router-link
                 >
               </li>
-              <li class="nav-item dropdown" v-if="isLoggedIn">
+              <li class="nav-item dropdown" v-if="user">
                 <a
                   class="nav-link"
                   href="#"
@@ -58,11 +58,12 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i class="fa-solid fa-circle-user"></i> {{ info.fname + "" }}
+                  <i class="fa-solid fa-circle-user"></i>
+                  {{ user.user_fname }} {{ user.user_lname }}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
-                    <router-link class="dropdown-item" to="profile"
+                    <router-link class="dropdown-item" to=""
                       >โปรไฟล์</router-link
                     >
                   </li>
@@ -70,9 +71,7 @@
                     <hr class="dropdown-divider" />
                   </li>
                   <li>
-                    <div class="dropdown-item text-danger" @click="signout()">
-                      ออกจากระบบ
-                    </div>
+                    <div class="dropdown-item text-danger" @click="logout()">ออกจากระบบ</div>
                   </li>
                 </ul>
               </li>
@@ -83,92 +82,45 @@
     </nav>
     <!-- Router views -->
     <div class="container mt-5">
-      <router-view></router-view>
+      <router-view
+        :key="$route.fullPath"
+        @auth-change="onAuthChange()"
+        :user="user"
+      ></router-view>
     </div>
   </div>
 </template>
 <script>
-import Swal from "sweetalert2";
-import axios from "axios";
-import { HTTP, SERVER_IP, PORT } from "./assets/js/SERVER_IP";
+import axios from "./plugins/axios";
 
 export default {
   data() {
     return {
-      info: null,
-      isLoggedIn: false,
+      user: null,
     };
   },
   methods: {
-    authentication(permission) {
-      if (permission) {
-        if (localStorage.getItem("token") === null) {
-          Swal.fire({
-            title: "โปรดลงชื่อเข้าสู่ระบบ",
-            icon: "warning",
-            showConfirmButton: true,
-          }).then(() => {
-            this.$router.push("/signin");
-          });
-          this.$router.push("/signin");
-        }
-      } else {
-        axios
-          .get(`${HTTP}://${SERVER_IP}:${PORT}/authentication`, {
-            headers: {
-              token: localStorage.getItem("token"),
-            },
-          })
-          .then((res) => {
-            const data = res.data;
-            if (data.status) {
-              this.isLoggedIn = true;
-              this.info = data.info;
-            } else {
-              this.isLoggedIn = false;
-              this.info = null;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    onAuthChange() {
+      const token = localStorage.getItem("token");
+      if (token) {
+        this.getUser();
       }
     },
-    signout() {
-      axios
-        .get(`${HTTP}://${SERVER_IP}:${PORT}/signout`, {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          const data = res.data;
-          if (data.status) {
-            localStorage.removeItem("token");
-            Swal.fire({
-              title: "สำเร็จ",
-              text: data.alert,
-              icon: "success",
-              timer: 3000,
-              showConfirmButton: false,
-            }).then(() => {
-              this.authentication();
-              this.$router.push("/signin");
-            });
-          } else {
-            Swal.fire({
-              title: "ไม่สำเร็จ",
-              text: data.alert,
-              icon: "error",
-              timer: 3000,
-              showConfirmButton: false,
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    getUser() {
+      axios.get("/user/me").then((res) => {
+        this.user = res.data;
+      });
     },
+    logout() {
+      axios.post("/user/logout").then((res) => {
+        localStorage.removeItem("token");
+        this.user = null;
+        this.$router.push("/signin");
+      });
+    },
+  },
+  created() {
+    this.onAuthChange();
   },
 };
 </script>
