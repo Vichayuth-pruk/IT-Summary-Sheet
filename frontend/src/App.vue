@@ -1,12 +1,9 @@
 <template>
   <div>
-    <nav
-      class="navbar navbar-expand-lg navbar-dark"
-      style="background-color: #1fab89"
-    >
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning">
       <div class="container">
         <router-link class="navbar-brand" to="/">
-          IT Summary Sheet
+          <b>IT Summary Sheet</b>
         </router-link>
         <button
           class="navbar-toggler"
@@ -44,37 +41,82 @@
                 >
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to=""
+                <router-link class="nav-link" to="/search"
                   ><i class="fa-solid fa-magnifying-glass"></i>
                   ค้นหาชีท</router-link
                 >
               </li>
-              <li class="nav-item dropdown" v-if="user">
-                <a
-                  class="nav-link"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+              <li class="nav-item">
+                <router-link class="nav-link" to="/favorite"
+                  ><i class="fa-solid fa-heart"></i> ชีทที่อยากได้</router-link
                 >
-                  <i class="fa-solid fa-circle-user"></i>
-                  {{ user.user_fname }} {{ user.user_lname }}
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <router-link class="dropdown-item" to=""
-                      >โปรไฟล์</router-link
-                    >
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <div class="dropdown-item text-danger" @click="logout()">ออกจากระบบ</div>
-                  </li>
-                </ul>
               </li>
+              <li class="nav-item">
+                <router-link class="nav-link" to="/cart"
+                  ><i class="fa-solid fa-cart-shopping"></i> ตะกร้า</router-link
+                >
+              </li>
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0" v-if="user">
+                <li class="nav-item dropdown dropstart">
+                  <a
+                    class="nav-link"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-user-circle fa-lg mx-1"></i>
+                    {{ user.email }}
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <router-link class="dropdown-item" to="/account"
+                        >บัญชี</router-link
+                      >
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item"
+                        >ITcoin {{ user.itcoin.toLocaleString() }}
+                        <router-link to="/itcoin"
+                          ><span class="badge bg-warning text-dark"
+                            >เติม coin</span
+                          ></router-link
+                        ></a
+                      >
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <router-link class="dropdown-item" to="/history"
+                        >ประวัติการสั่งซื้อ</router-link
+                      >
+                    </li>
+                    <li>
+                      <router-link class="dropdown-item" to="/mysheets"
+                        >ชีทของฉัน</router-link
+                      >
+                    </li>
+                    <li>
+                      <router-link class="dropdown-item" to="/myreview"
+                        >รีวิวของฉัน</router-link
+                      >
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" @click="logout()"
+                        ><span class="text-danger">ออกจากระบบ</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </ul>
           </div>
         </div>
@@ -107,12 +149,12 @@ export default {
       }
     },
     getUser() {
-      axios.get("/user/me").then((res) => {
+      axios.get("/users/me").then((res) => {
         this.user = res.data;
       });
     },
     logout() {
-      axios.post("/user/logout").then((res) => {
+      axios.post("/users/logout").then((res) => {
         localStorage.removeItem("token");
         this.user = null;
         this.$router.push("/signin");

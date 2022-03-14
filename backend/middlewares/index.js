@@ -1,9 +1,13 @@
 const { request } = require("express");
 const pool = require("../config/database");
+const moment = require("moment");
+const colors = require("colors");
 
 async function logger(req, res, next) {
-  const timestamp = new Date().toISOString().substring(0, 19);
-  console.log(`${timestamp} | ${req.method}: ${req.originalUrl}`);
+  const timestamp = moment(new Date()).format("Y-MM-DD h:mm:ss a");
+  console.log(
+    `${timestamp}`.yellow + ` | ` + `${req.method}: ${req.originalUrl}`.inverse
+  );
   next();
 }
 
@@ -11,28 +15,22 @@ async function isLoggedIn(req, res, next) {
   let authorization = req.headers.authorization;
 
   if (!authorization) {
-    return res.status(401).send("You are not logged in");
+    return res.status(401).send("คุณยังไม่ได้ลงชื่อเข้าใช้งาน");
   }
 
-  let [part1, part2] = authorization.split(" ");
-  if (part1 !== "Bearer" || !part2) {
-    return res.status(401).send("You are not logged in");
-  }
-
-  const [tokens] = await pool.query(
-    "SELECT * FROM tokens WHERE token_token = ?",
-    [part2]
-  );
+  const [tokens] = await pool.query("SELECT * FROM tokens WHERE token = ?", [
+    authorization,
+  ]);
   const token = tokens[0];
   if (!token) {
-    return res.status(401).send("You are not logged in");
+    return res.status(401).send("คุณยังไม่ได้ลงชื่อเข้าใช้งาน");
   }
 
-  const [users] = await pool.query(
-    "SELECT user_id, user_email, user_fname, user_lname, user_role FROM users WHERE user_id = ?",
+  const [[users]] = await pool.query(
+    "SELECT id, email, firstname, lastname, username, role, itcoin FROM users WHERE id = ?",
     [token.user_id]
   );
-  req.user = users[0];
+  req.user = users;
 
   next();
 }

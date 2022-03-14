@@ -1,13 +1,12 @@
 <template>
   <div>
-    <h1>Profile</h1>
+    <h2>รายการที่อยากได้</h2>
   </div>
 </template>
 <script>
 export default {
-  name: "Profile",
   props: {
-    user: { type: Object }
+    user: { type: Object },
   },
   data() {
     return {};
