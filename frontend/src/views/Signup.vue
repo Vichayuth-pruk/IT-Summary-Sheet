@@ -22,34 +22,49 @@
         </div>
         <div class="row mb-3 g-2">
           <div class="col">
-            <label class="form-label" for="fname">ชื่อ</label>
+            <label class="form-label" for="firstname">ชื่อ</label>
             <input
               type="text"
               class="form-control"
-              :class="{ 'is-invalid': v$.signup.fname.$error }"
-              v-model="signup.fname"
+              :class="{ 'is-invalid': v$.signup.firstname.$error }"
+              v-model="signup.firstname"
               placeholder="ชื่อ"
-              name="fname"
-              aria-describedby="fname"
+              name="firstname"
+              aria-describedby="firstname"
             />
-            <div v-if="v$.signup.fname.$error" class="my-2 text-danger">
+            <div v-if="v$.signup.firstname.$error" class="my-2 text-danger">
               โปรดป้อนชื่อให้ถูกต้อง
             </div>
           </div>
           <div class="col">
-            <label class="form-label" for="lname">นามสกุล</label>
+            <label class="form-label" for="lastname">นามสกุล</label>
             <input
               type="text"
               class="form-control"
-              :class="{ 'is-invalid': v$.signup.lname.$error }"
-              v-model="signup.lname"
+              :class="{ 'is-invalid': v$.signup.lastname.$error }"
+              v-model="signup.lastname"
               placeholder="นามสกุล"
-              name="lname"
-              aria-describedby="lname"
+              name="lastname"
+              aria-describedby="lastname"
             />
-            <div v-if="v$.signup.lname.$error" class="my-2 text-danger">
+            <div v-if="v$.signup.lastname.$error" class="my-2 text-danger">
               โปรดป้อนนามสกุลให้ถูกต้อง
             </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="username">ชื่อที่ใช้แสดง</label>
+          <input
+            type="text"
+            class="form-control"
+            :class="{ 'is-invalid': v$.signup.username.$error }"
+            v-model="signup.username"
+            placeholder="ชื่อที่ใช้แสดง"
+            name="username"
+            aria-describedby="username"
+          />
+          <div v-if="v$.signup.username.$error" class="my-2 text-danger">
+            โปรดป้อนชื่อที่ใช้แสดงให้ถูกต้อง
           </div>
         </div>
         <div class="mb-3">
@@ -63,7 +78,7 @@
             name="password"
           />
           <div v-if="v$.signup.password.$error" class="my-2 text-danger">
-            โปรดป้อนรหัสผ่านให้ถูกต้อง (5 - 18 ตัวอักษร)
+            โปรดป้อนรหัสผ่านให้ถูกต้อง (5 - 20 ตัวอักษร)
           </div>
         </div>
         <div class="mb-3">
@@ -109,8 +124,9 @@ export default {
       v$: useVuelidate(),
       signup: {
         email: "",
-        fname: "",
-        lname: "",
+        firstname: "",
+        lastname: "",
+        username: "",
         password: "",
         c_password: "",
       },
@@ -119,7 +135,7 @@ export default {
   methods: {
     submitSignup() {
       axios
-        .post("http://localhost:3001/user/signup", this.signup)
+        .post("http://localhost:3001/users/signup", this.signup)
         .then((res) => {
           if (res.data.status) {
             Swal.fire({
@@ -157,13 +173,14 @@ export default {
   validations() {
     return {
       signup: {
-        email: { required, email, maxLength: maxLength(50) },
-        fname: { required, maxLength: maxLength(50) },
-        lname: { required, maxLength: maxLength(50) },
+        email: { required, email, maxLength: maxLength(100) },
+        firstname: { maxLength: maxLength(100) },
+        lastname: { maxLength: maxLength(100) },
+        username: { required, maxLength: maxLength(100) },
         password: {
           required,
           minLength: minLength(5),
-          maxLength: maxLength(18),
+          maxLength: maxLength(20),
         },
         c_password: {
           required,

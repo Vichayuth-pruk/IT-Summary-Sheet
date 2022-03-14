@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>หน้าแรก</h2>
+    <h2>ประวัติการสั่งซื้อของฉัน</h2>
   </div>
 </template>
 <script>

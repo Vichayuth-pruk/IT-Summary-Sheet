@@ -38,7 +38,7 @@
           <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
         </div>
         <div class="mb-3 text-center">
-          เไม่ได้เป็นสมาชิกใช่ไหม คลิกที่นี่เพื่อ
+          ไม่ได้เป็นสมาชิกใช่ไหม คลิกที่นี่เพื่อ
           <router-link to="/signup">ลงทะเบียน</router-link>
         </div>
       </form>
@@ -64,12 +64,12 @@ export default {
   methods: {
     submitSignin() {
       axios
-        .post("http://localhost:3001/user/signin", this.signin)
+        .post("http://localhost:3001/users/signin", this.signin)
         .then((res) => {
           if (res.data.status) {
             const token = res.data.token;
             localStorage.setItem("token", token);
-            this.$emit('auth-change')
+            this.$emit("auth-change");
             this.$router.push("/");
           } else {
             Swal.fire({
