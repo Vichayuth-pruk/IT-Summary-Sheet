@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
+import { useMutation } from "@apollo/client"
+import { REGISTER_MUTATION } from "../graphql/registerMutation"
+import { useNavigate } from "react-router-dom"
 
 const schema = yup
   .object({
@@ -18,6 +21,9 @@ const schema = yup
   .required()
 
 function Signup() {
+  const navigate = useNavigate()
+  const [registerUser] = useMutation(REGISTER_MUTATION)
+
   const {
     register,
     handleSubmit,
@@ -26,7 +32,6 @@ function Signup() {
     resolver: yupResolver(schema),
   })
   const onSubmit = (data) => {
-    console.log(data)
     Swal.fire({
       title: "ยืนยันข้อมูลถูกต้องหรือไม่",
       text: "คุณต้องการสมัครสมาชิกหรือไม่",
@@ -36,9 +41,36 @@ function Signup() {
       cancelButtonColor: "#6E7881",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        // Swal.fire({ title: "ลงทะเบียนสำเร็จ", icon: "success" })
+        let { email, firstname, lastname, username, password } = data
+        try {
+          await registerUser({
+            variables: {
+              record: {
+                email,
+                firstname,
+                lastname,
+                username,
+                password,
+              },
+            },
+          })
+          Swal.fire({
+            title: "สำเร็จ",
+            icon: "success",
+            timer: 3000,
+          }).then(() => {
+            navigate("/signin")
+          })
+        } catch (errors) {
+          console.log(errors)
+          Swal.fire({
+            title: "ไม่สำเร็จ",
+            text: errors.message,
+            icon: "error",
+          })
+        }
       }
     })
   }

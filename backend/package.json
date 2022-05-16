@@ -1,24 +1,16 @@
 {
-  "name": "graphql-crud",
+  "name": "itsheet-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node -r @babel/register -r dotenv/config src/app.js",
     "dev": "nodemon -r @babel/register -r dotenv/config src/app.js",
-    "format": "npx prettier --write ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/docxed/graphql-crud.git"
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/docxed/graphql-crud/issues"
-  },
-  "homepage": "https://github.com/docxed/graphql-crud#readme",
   "dependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
