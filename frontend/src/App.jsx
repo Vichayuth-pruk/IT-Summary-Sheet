@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { gql, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import AuthContext from "./contexts/authContext"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
@@ -14,6 +14,7 @@ import Search from "./pages/Search"
 import Favorite from "./pages/Favorite"
 import Cart from "./pages/Cart"
 import Account from "./pages/Account"
+import Changepassword from "./pages/Changepassword"
 
 function App() {
   const navigate = useNavigate()
@@ -40,6 +41,10 @@ function App() {
             <Route path="/favorite" element={<Favorite meta={"login"} />} />
             <Route path="/cart" element={<Cart meta={"login"} />} />
             <Route path="/account" element={<Account meta={"login"} />} />
+            <Route
+              path="/changepassword"
+              element={<Changepassword meta={"login"} logout={logout} />}
+            />
           </Routes>
         </div>
       </AuthContext.Provider>

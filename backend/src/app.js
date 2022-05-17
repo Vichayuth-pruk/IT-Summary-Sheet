@@ -46,7 +46,6 @@ const startApolloServer = async () => {
         token = headers?.authorization.split(" ")?.[1]
       }
       if (token) {
-        console.log("logged")
         const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET)
         return { userId: payload.userId }
       }

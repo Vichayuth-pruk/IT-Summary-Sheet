@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
@@ -171,6 +171,10 @@ function Signup(props) {
             <button className="btn btn-success" type="submit">
               ลงทะเบียน
             </button>
+            <div className="my-2">
+              เป็นสมาชิกแล้วใช่ไหม คลิกที่นี่เพื่อ{" "}
+              <Link to="/signin">เข้าสู่ระบบ</Link>
+            </div>
           </div>
         </form>
       </div>

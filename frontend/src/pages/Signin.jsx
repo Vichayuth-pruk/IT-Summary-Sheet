@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
@@ -95,6 +95,10 @@ function Signin(props) {
             <button className="btn btn-primary" type="submit">
               เข้าสู่ระบบ
             </button>
+            <div className="my-2">
+              ไม่ได้เป็นสมาชิกใช่ไหม คลิกที่นี่เพื่อ{" "}
+              <Link to="/signup">ลงทะเบียน</Link>
+            </div>
           </div>
         </form>
       </div>
