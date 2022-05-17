@@ -1,0 +1,148 @@
+import React from "react"
+import { Link } from "react-router-dom"
+import brand from "../assets/favicon.svg"
+
+function Navs(props) {
+  return (
+    <>
+      <div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <div className="container">
+            <Link className="navbar-brand" to="/">
+              <img
+                src={brand}
+                width={35}
+                height={30}
+                className="d-inline-block align-text-top"
+              />
+
+              <b className="ms-2">IT Summary Sheet</b>
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon" />
+            </button>
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                {props.me ? (
+                  <></>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/signup">
+                        <span className="badge bg-success">ลงทะเบียน</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/signin">
+                        เข้าสู่ระบบ
+                      </Link>
+                    </li>
+                  </>
+                )}
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">
+                    <i className="fa-solid fa-house" /> หน้าแรก
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/search">
+                    <i className="fa-solid fa-magnifying-glass" /> ค้นหาชีท
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/favorite">
+                    <i className="fa-solid fa-star" /> ชีทที่อยากได้
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/cart">
+                    <i className="fa-solid fa-cart-shopping" /> ตะกร้า
+                  </Link>
+                </li>
+                {props.me ? (
+                  <>
+                    <li className="nav-item dropdown">
+                      <a
+                        className="nav-link dropdown-toggle"
+                        href="#"
+                        id="navbarDropdownMenuLink"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {props.me.email}
+                      </a>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="navbarDropdownMenuLink"
+                      >
+                        <li>
+                          <Link className="dropdown-item" to="/account">
+                            บัญชี
+                          </Link>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <div className="dropdown-item">
+                            itcoin {props.me.itcoin.toFixed(2).toLocaleString()}{" "}
+                            <span className="badge badge-sm bg-primary">
+                              เติม coin
+                            </span>
+                          </div>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a className="dropdown-item">ประวัติการสั่งซื้อ</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            ชีทของฉัน
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            รีวิวของฉัน
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a
+                            className="dropdown-item text-danger"
+                            onClick={props.logout}
+                          >
+                            ออกจากระบบ
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </>
+  )
+}
+
+export default Navs
