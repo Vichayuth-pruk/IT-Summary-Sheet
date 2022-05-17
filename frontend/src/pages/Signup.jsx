@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useEffect, useContext } from "react"
+import AuthContext from "../contexts/authContext"
+import isLoggedIn from "../middlewares/isLoggedIn"
+import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import { useMutation } from "@apollo/client"
 import { REGISTER_MUTATION } from "../graphql/registerMutation"
-import { useNavigate } from "react-router-dom"
 
 const schema = yup
   .object({
@@ -20,8 +22,14 @@ const schema = yup
   })
   .required()
 
-function Signup() {
+function Signup(props) {
+  // Middleware
+  const me = useContext(AuthContext)
   const navigate = useNavigate()
+  useEffect(() => {
+    isLoggedIn(props.meta, me, navigate)
+  }, [])
+
   const [registerUser] = useMutation(REGISTER_MUTATION)
 
   const {

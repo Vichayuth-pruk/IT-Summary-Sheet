@@ -1,12 +1,14 @@
-import React from "react"
+import React, { useEffect, useContext } from "react"
+import AuthContext from "../contexts/authContext"
+import isLoggedIn from "../middlewares/isLoggedIn"
+import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import { useMutation } from "@apollo/client"
 import { LOGIN_MUTATION } from "../graphql/loginMutation"
-import { useNavigate } from "react-router-dom"
-import { useCookies } from "react-cookie"
+import Cookies from "js-cookie"
 
 const schema = yup
   .object({
@@ -15,10 +17,15 @@ const schema = yup
   })
   .required()
 
-function Signin() {
+function Signin(props) {
+  // Middleware
+  const me = useContext(AuthContext)
   const navigate = useNavigate()
+  useEffect(() => {
+    isLoggedIn(props.meta, me, navigate)
+  }, [])
+
   const [login] = useMutation(LOGIN_MUTATION)
-  const [cookies, setCookie] = useCookies(["token"])
 
   const {
     register,
@@ -32,7 +39,8 @@ function Signin() {
     try {
       const response = await login({ variables: { email, password } })
       if (response.data.login.status === "success") {
-        setCookie("token", response.data.login.token)
+        Cookies.set("token", response.data.login.token)
+        await props.refetch()
         navigate("/")
       } else {
         Swal.fire({

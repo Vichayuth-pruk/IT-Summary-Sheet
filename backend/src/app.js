@@ -2,6 +2,7 @@ import { createServer } from "http"
 import jsonwebtoken from "jsonwebtoken"
 import cors from "cors"
 import express from "express"
+import cookieParser from "cookie-parser"
 import { ApolloServer } from "apollo-server-express"
 import {
   ApolloServerPluginDrainHttpServer,
@@ -13,10 +14,14 @@ import "./mongoose-connect"
 import schema from "./graphql"
 
 const app = express()
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-// app.use(cors({ origin: ['http://localhost:3000'] }))
-app.use(cors())
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  credentials: true,
+}
+app.use(cors(corsOptions))
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello This is IT Summary Sheet API" })
@@ -41,6 +46,7 @@ const startApolloServer = async () => {
         token = headers?.authorization.split(" ")?.[1]
       }
       if (token) {
+        console.log("logged")
         const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET)
         return { userId: payload.userId }
       }
@@ -52,7 +58,7 @@ const startApolloServer = async () => {
   apolloServer.applyMiddleware({
     app,
     path: "/graphql",
-    // cors: { origin: ["*"] },
+    cors: corsOptions,
   })
   const PORT = process.env.PORT || 3001
   httpServer.listen({ port: PORT })

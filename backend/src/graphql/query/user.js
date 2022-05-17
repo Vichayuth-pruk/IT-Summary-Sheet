@@ -12,7 +12,7 @@ export const me = schemaComposer.createResolver({
   resolve: async ({ context }) => {
     const { userId: _id } = context
     if (!_id) {
-      throw new UserInputError("invalid token")
+      return null
     }
     const user = await UserModel.findById(_id)
     return user

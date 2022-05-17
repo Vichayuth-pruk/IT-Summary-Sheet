@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import brand from "../assets/logo.svg"
 
-function Navs() {
+function Navs(props) {
   return (
     <>
       <div>
@@ -34,16 +34,22 @@ function Navs() {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/signup">
-                    <span className="badge bg-success">ลงทะเบียน</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/signin">
-                    เข้าสู่ระบบ
-                  </Link>
-                </li>
+                {props.me ? (
+                  <></>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/signup">
+                        <span className="badge bg-success">ลงทะเบียน</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/signin">
+                        เข้าสู่ระบบ
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" to="/">
                     <i className="fa-solid fa-house" /> หน้าแรก
@@ -64,6 +70,72 @@ function Navs() {
                     <i className="fa-solid fa-cart-shopping" /> ตะกร้า
                   </Link>
                 </li>
+                {props.me ? (
+                  <>
+                    <li className="nav-item dropdown">
+                      <a
+                        className="nav-link dropdown-toggle"
+                        href="#"
+                        id="navbarDropdownMenuLink"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {props.me.email}
+                      </a>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="navbarDropdownMenuLink"
+                      >
+                        <li>
+                          <Link className="dropdown-item" to="/account">
+                            บัญชี
+                          </Link>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <div className="dropdown-item">
+                            itcoin {props.me.itcoin.toFixed(2).toLocaleString()}{" "}
+                            <span className="badge badge-sm bg-primary">
+                              เติม coin
+                            </span>
+                          </div>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a className="dropdown-item">ประวัติการสั่งซื้อ</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            ชีทของฉัน
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            รีวิวของฉัน
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a
+                            className="dropdown-item text-danger"
+                            onClick={props.logout}
+                          >
+                            ออกจากระบบ
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </>
+                ) : (
+                  <></>
+                )}
               </ul>
             </div>
           </div>

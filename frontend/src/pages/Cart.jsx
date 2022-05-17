@@ -3,7 +3,7 @@ import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
 import { useNavigate } from "react-router-dom"
 
-function Home(props) {
+function Cart(props) {
   // Middleware
   const me = useContext(AuthContext)
   const navigate = useNavigate()
@@ -11,10 +11,7 @@ function Home(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return (
-    <>
-      <div>Home</div>
-    </>
-  )
+  return <div>Cart</div>
 }
-export default Home
+
+export default Cart
