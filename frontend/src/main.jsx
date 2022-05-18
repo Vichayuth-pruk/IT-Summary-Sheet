@@ -9,10 +9,9 @@ import {
   createHttpLink,
   InMemoryCache,
 } from "@apollo/client"
-import { CookiesProvider } from "react-cookie"
 
 const link = createHttpLink({
-  uri: "http://localhost:3001/graphql",
+  uri: import.meta.env.VITE_GRAPHQL_URI,
   credentials: "include",
 })
 
@@ -25,9 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <CookiesProvider>
-          <App />
-        </CookiesProvider>
+        <App />
       </ApolloProvider>
     </BrowserRouter>
   </React.StrictMode>

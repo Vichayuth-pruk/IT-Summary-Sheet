@@ -73,7 +73,14 @@ function Account(props) {
     }
   }
 
-  if (loading) return <div>Loading...</div>
+  if (loading)
+    return (
+      <div className="text-end">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    )
   return (
     <>
       <div className="h2">จัดการบัญชี</div>
@@ -140,6 +147,7 @@ function Account(props) {
           </div>
         </form>
       </div>
+      <br />
     </>
   )
 }

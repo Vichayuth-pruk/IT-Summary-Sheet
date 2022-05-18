@@ -4,6 +4,7 @@ import AuthContext from "./contexts/authContext"
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
 import { ME_QUERY } from "./graphql/meQuery"
+import { FAVORITE_BY_USERID_QUERY } from "./graphql/favoriteQuery"
 
 // Use routes
 import Navs from "./components/Navs"
@@ -15,6 +16,13 @@ import Favorite from "./pages/Favorite"
 import Cart from "./pages/Cart"
 import Account from "./pages/Account"
 import Changepassword from "./pages/Changepassword"
+import Itcoin from "./pages/Itcoin"
+import History from "./pages/history"
+import Mysheets from "./pages/Mysheets"
+import Myreview from "./pages/Myreview"
+import Sheetsmanage from "./pages/Sheetsmanage"
+import Createsheet from "./pages/Createsheet"
+import Sheet from "./pages/Sheet"
 
 function App() {
   const navigate = useNavigate()
@@ -24,11 +32,25 @@ function App() {
     await refetch()
     navigate("/signin")
   }
-  if (loading) return <div>Loading...</div>
+  const favoriteByUserId = useQuery(FAVORITE_BY_USERID_QUERY, {
+    variables: {
+      userId: data?.me?._id,
+    },
+    skip: !data?.me?._id,
+  })
+
+  if (loading || favoriteByUserId.loading)
+    return (
+      <div className="text-end">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    )
   return (
     <>
       <AuthContext.Provider value={data?.me}>
-        <Navs me={data?.me} logout={logout} />
+        <Navs me={data?.me} logout={logout} fav={favoriteByUserId.data} />
         <div className="my-5 container">
           <Routes>
             <Route path="/" element={<Home meta={""} />} />
@@ -44,6 +66,22 @@ function App() {
             <Route
               path="/changepassword"
               element={<Changepassword meta={"login"} logout={logout} />}
+            />
+            <Route path="/itcoin" element={<Itcoin meta={"login"} />} />
+            <Route path="/history" element={<History meta={"login"} />} />
+            <Route path="/mysheets" element={<Mysheets meta={"login"} />} />
+            <Route path="/myreview" element={<Myreview meta={"login"} />} />
+            <Route
+              path="/sheetsmanage"
+              element={<Sheetsmanage meta={"login"} />}
+            />
+            <Route
+              path="/createsheet"
+              element={<Createsheet meta={"login"} />}
+            />
+            <Route
+              path="/sheet/:id"
+              element={<Sheet meta={"login"} fav={favoriteByUserId.refetch} />}
             />
           </Routes>
         </div>

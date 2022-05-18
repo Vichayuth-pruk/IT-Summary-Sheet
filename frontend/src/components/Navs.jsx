@@ -62,7 +62,14 @@ function Navs(props) {
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/favorite">
-                    <i className="fa-solid fa-star" /> ชีทที่อยากได้
+                    <i className="fa-solid fa-heart" /> ชีทที่อยากได้{" "}
+                    {props.fav?.favorites?.length === 0 ? (
+                      <></>
+                    ) : (
+                      <span className="badge rounded-pill bg-danger">
+                        {props.fav?.favorites?.length ?? ""}
+                      </span>
+                    )}
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -97,27 +104,40 @@ function Navs(props) {
                         </li>
                         <li>
                           <div className="dropdown-item">
-                            itcoin {props.me.itcoin.toFixed(2).toLocaleString()}{" "}
-                            <span className="badge badge-sm bg-primary">
-                              เติม coin
-                            </span>
+                            itcoin{" "}
+                            {props.me.itcoin.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}{" "}
+                            <Link to="/itcoin">
+                              <span className="badge badge-sm bg-primary">
+                                เติม coin
+                              </span>
+                            </Link>
                           </div>
                         </li>
                         <li>
                           <hr className="dropdown-divider" />
                         </li>
                         <li>
-                          <a className="dropdown-item">ประวัติการสั่งซื้อ</a>
+                          <Link to="/history" className="dropdown-item">
+                            ประวัติการสั่งซื้อ
+                          </Link>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link to="/mysheets" className="dropdown-item">
                             ชีทของฉัน
-                          </a>
+                          </Link>
                         </li>
                         <li>
-                          <a className="dropdown-item" href="#">
+                          <Link to="/myreview" className="dropdown-item">
                             รีวิวของฉัน
-                          </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/sheetsmanage" className="dropdown-item">
+                            ฉันต้องการขายชีท
+                          </Link>
                         </li>
                         <li>
                           <hr className="dropdown-divider" />
