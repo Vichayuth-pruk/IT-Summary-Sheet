@@ -40,6 +40,7 @@ function Account(props) {
 
   useEffect(() => {
     reset(data.me)
+    refetch()
   }, [data])
 
   const [updateUser] = useMutation(ME_MUTATION)
@@ -61,7 +62,6 @@ function Account(props) {
         icon: "success",
         timer: 1500,
       })
-      props.logout()
     } catch (errors) {
       console.log(errors)
       Swal.fire({
