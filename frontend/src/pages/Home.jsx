@@ -13,7 +13,10 @@ function Home(props) {
 
   return (
     <>
-      <div>Home</div>
+      <div className="h2">หน้าแรก</div>
+      <hr />
+      <br />
+      <br />
     </>
   )
 }

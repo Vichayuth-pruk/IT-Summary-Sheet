@@ -11,7 +11,14 @@ function Myreview(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return <div>Myreview</div>
+  return (
+    <>
+      <div className="h2">รีวิวของฉัน</div>
+      <hr />
+      <br />
+      <br />
+    </>
+  )
 }
 
 export default Myreview

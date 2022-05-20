@@ -11,7 +11,14 @@ function History(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return <div>History</div>
+  return (
+    <>
+      <div className="h2">ประวัติการสั่งซื้อของฉัน</div>
+      <hr />
+      <br />
+      <br />
+    </>
+  )
 }
 
 export default History

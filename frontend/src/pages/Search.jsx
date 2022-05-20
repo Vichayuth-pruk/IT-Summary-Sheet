@@ -11,7 +11,14 @@ function Search(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return <div>Search</div>
+  return (
+    <>
+      <div className="h2">ค้นหาชีท</div>
+      <hr />
+      <br />
+      <br />
+    </>
+  )
 }
 
 export default Search

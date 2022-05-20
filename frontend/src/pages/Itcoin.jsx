@@ -11,7 +11,14 @@ function Itcoin(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return <div>Itcoin</div>
+  return (
+    <>
+      <div className="h2">itcoin</div>
+      <hr />
+      <br />
+      <br />
+    </>
+  )
 }
 
 export default Itcoin

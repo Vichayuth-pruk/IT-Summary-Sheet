@@ -11,7 +11,14 @@ function Mysheets(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return <div>Mysheets</div>
+  return (
+    <>
+      <div className="h2">ชีทของฉัน</div>
+      <hr />
+      <br />
+      <br />
+    </>
+  )
 }
 
 export default Mysheets

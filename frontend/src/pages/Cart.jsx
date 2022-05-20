@@ -11,7 +11,14 @@ function Cart(props) {
     isLoggedIn(props.meta, me, navigate)
   }, [])
 
-  return <div>Cart</div>
+  return (
+    <>
+      <div className="h2">ตะกร้า</div>
+      <hr />
+      <br />
+      <br />
+    </>
+  )
 }
 
 export default Cart
