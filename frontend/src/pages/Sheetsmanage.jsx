@@ -6,6 +6,7 @@ import { SHEET_BY_USERID_QUERY } from "../graphql/sheetQuery"
 import { DELETE_SHEET_MUTATION } from "../graphql/sheetMutation"
 import { useQuery, useMutation } from "@apollo/client"
 import moment from "moment"
+import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 
 function Sheetsmanage(props) {
   // Middleware
@@ -26,17 +27,30 @@ function Sheetsmanage(props) {
 
   const [deleteSheet] = useMutation(DELETE_SHEET_MUTATION)
   const onSubmitDeleteSheet = async (sheetId) => {
-    try {
-      await deleteSheet({
-        variables: {
-          sheetId,
-        },
-      })
-      await refetch()
-      await props.fav()
-    } catch (error) {
-      console.log(error)
-    }
+    Swal.fire({
+      title: "คุณต้องการลบไฟล์ชีทนี้หรือไม่?",
+      text: "การลบไฟล์ชีทนี้จะไม่สามารถกู้คืนได้",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#DC3545",
+      cancelButtonColor: "#6E7881",
+      confirmButtonText: "ลบ",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteSheet({
+            variables: {
+              sheetId,
+            },
+          })
+          await refetch()
+          await props.fav()
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    })
   }
 
   if (loading)
