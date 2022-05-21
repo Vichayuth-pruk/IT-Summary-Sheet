@@ -8,22 +8,27 @@ pipeline {
         }
         stage("Download dependencies") {
             steps {
-                sh "cd frontend && npm install"
+                dir ("./frontend"){
+                    sh "npm install"
+                }
             }
         }
         stage("Make env") {
             steps {
-                withCredentials([file(credentialsId: 'ITSUMMARYSHEET_ENV', variable: 'FRONTEND_ENV')]) {
-                    script {
-                        sh "cd frontend"
-                        writeFile(file: '.env', text: readFile(FRONTEND_ENV))
+                dir ("./frontend"){
+                    withCredentials([file(credentialsId: 'ITSUMMARYSHEET_ENV', variable: 'FRONTEND_ENV')]) {
+                        script {
+                            writeFile(file: '.env', text: readFile(FRONTEND_ENV))
+                        }
                     }
                 }
             }
         }
         stage("Build frontend") {
             steps {
-                sh "cd frontend && npm run build"
+                dir ("./frontend"){
+                    sh "npm run build"
+                }
             }
         }
     }
