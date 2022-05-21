@@ -84,6 +84,7 @@ function Home(props) {
                       <h5 className='card-title'>วิชา {item.courseTitle}</h5>
                       <h6 className='card-text'>โดย {item.username}</h6>
                       <h6 className='card-text'>ปี {item.year} สาขา {item.programme}</h6>
+                      <h5 className='card-text text-end fw-bold'>ราคา ฿{item.price}</h5>
                       <div>
                         <Rating
                           name="simple-controlled"
@@ -93,7 +94,7 @@ function Home(props) {
                         />
                       </div>
                       <div className="d-grid gap-2">
-                        <button type="button" className="btn btn-dark">ราคา ฿{item.price}</button>
+                        <button type="button" className="btn btn-outline-dark">รายละเอียด</button>
                       </div>
                     </div>
                   </div>
