@@ -3,6 +3,7 @@ import { SheetModel, SheetTC } from "../../models/sheet"
 import { FavoriteModel } from "../../models/favorite"
 
 export const createSheet = SheetTC.getResolver("createOne")
+export const updateSheet = SheetTC.getResolver("updateById")
 export const deleteSheet = schemaComposer.createResolver({
   name: "deleteSheet",
   type: SheetTC,

@@ -24,6 +24,8 @@ import Sheetsmanage from "./pages/Sheetsmanage"
 import Createsheet from "./pages/Createsheet"
 import Sheet from "./pages/Sheet"
 import Checkout from "./pages/Checkout"
+import Sheetedit from "./pages/Sheetedit"
+import Mysheet from "./pages/Mysheet"
 
 function App() {
   const navigate = useNavigate()
@@ -87,6 +89,11 @@ function App() {
               element={<Sheet meta={"login"} fav={favoriteByUserId.refetch} />}
             />
             <Route path="/checkout" element={<Checkout meta={"login"} />} />
+            <Route
+              path="/sheetedit/:id"
+              element={<Sheetedit meta={"login"} />}
+            />
+            <Route path="/mysheet/:id" element={<Mysheet meta={"login"} />} />
           </Routes>
         </div>
       </AuthContext.Provider>

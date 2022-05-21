@@ -92,7 +92,7 @@ function Sheetsmanage(props) {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <i className="fa-solid fa-ellipsis" />
+                    <i className="fa-solid fa-lg fa-ellipsis" />
                   </button>
                   <ul
                     className="dropdown-menu"
@@ -101,7 +101,15 @@ function Sheetsmanage(props) {
                     <li>
                       <Link
                         className="dropdown-item"
-                        to={"/sheet/" + sheet._id}
+                        to={"/mysheet/" + sheet._id}
+                      >
+                        ดูชีท pdf
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to={"/sheetedit/" + sheet._id}
                       >
                         แก้ไข
                       </Link>

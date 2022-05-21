@@ -15,3 +15,11 @@ export const DELETE_SHEET_MUTATION = gql`
     }
   }
 `
+
+export const UPDATE_SHEET_MUTATION = gql`
+  mutation UpdateSheet($sheetId: MongoID!, $record: UpdateByIdSheetInput!) {
+    updateSheet(_id: $sheetId, record: $record) {
+      recordId
+    }
+  }
+`
