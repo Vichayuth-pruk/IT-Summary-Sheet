@@ -32,8 +32,6 @@ function Shop(props) {
     skip: !id,
   })
 
-  console.log(userRes.data)
-
   if (loading || userRes.loading)
     return (
       <div className="text-end">

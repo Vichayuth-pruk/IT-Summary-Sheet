@@ -7,7 +7,6 @@ import { ApolloServer } from "apollo-server-express"
 import {
   ApolloServerPluginDrainHttpServer,
   ApolloServerPluginLandingPageGraphQLPlayground,
-  gql,
 } from "apollo-server-core"
 
 import "./mongoose-connect"
@@ -18,7 +17,11 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:4173"],
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:4173",
+    "https://itsummarysheet.herokuapp.com",
+  ],
   credentials: true,
 }
 app.use(cors(corsOptions))
@@ -31,7 +34,7 @@ const startApolloServer = async () => {
   const httpServer = createServer(app)
   const apolloServer = new ApolloServer({
     schema,
-    introspection: true,
+    introspection: false,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground(),

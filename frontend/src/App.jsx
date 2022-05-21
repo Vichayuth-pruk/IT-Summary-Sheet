@@ -27,6 +27,7 @@ import Checkout from "./pages/Checkout"
 import Sheetedit from "./pages/Sheetedit"
 import Mysheet from "./pages/Mysheet"
 import Shop from "./pages/Shop"
+import Notfound from "./pages/Notfound"
 
 function App() {
   const navigate = useNavigate()
@@ -57,6 +58,7 @@ function App() {
         <Navs me={data?.me} logout={logout} fav={favoriteByUserId.data} />
         <div className="my-5 container">
           <Routes>
+            <Route path="*" element={<Notfound />} />
             <Route path="/" element={<Home meta={""} />} />
             <Route
               path="/signin"

@@ -9,6 +9,18 @@ import {
   createHttpLink,
   InMemoryCache,
 } from "@apollo/client"
+import { setContext } from "@apollo/client/link/context"
+import Cookies from "js-cookie"
+
+const setAuthorizationLink = setContext((_, { headers }) => {
+  const token = Cookies.get("token")
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  }
+})
 
 const link = createHttpLink({
   uri: import.meta.env.VITE_GRAPHQL_URI,
@@ -17,7 +29,7 @@ const link = createHttpLink({
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link,
+  link: setAuthorizationLink.concat(link),
 })
 
 ReactDOM.createRoot(document.getElementById("root")).render(
