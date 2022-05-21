@@ -17,17 +17,18 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:4173",
-    "https://itsummarysheet.herokuapp.com",
-  ],
+  origin:
+    process.env.NODE_ENV === "production"
+      ? ["https://itsummarysheet.herokuapp.com"]
+      : true,
   credentials: true,
 }
 app.use(cors(corsOptions))
 
 app.get("/", (req, res) => {
-  res.json({ message: "Hello This is IT Summary Sheet API" })
+  res.json({
+    message: "Hello This is IT Summary Sheet API" + process.env.NODE_ENV,
+  })
 })
 
 const startApolloServer = async () => {
@@ -35,10 +36,13 @@ const startApolloServer = async () => {
   const apolloServer = new ApolloServer({
     schema,
     introspection: true,
-    plugins: [
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-      ApolloServerPluginLandingPageGraphQLPlayground(),
-    ],
+    plugins:
+      process.env.NODE_ENV === "production"
+        ? [ApolloServerPluginDrainHttpServer({ httpServer })]
+        : [
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+            ApolloServerPluginLandingPageGraphQLPlayground(),
+          ],
     context: ({ req }) => {
       const { cookies, headers } = req
       let token = null
