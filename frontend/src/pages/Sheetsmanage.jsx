@@ -101,7 +101,7 @@ function Sheetsmanage(props) {
                     <li>
                       <Link
                         className="dropdown-item"
-                        to={"/mysheet/" + sheet._id}
+                        to={"/mysheet/" + sheet._id + "?pov=seller"}
                       >
                         ดูชีท pdf
                       </Link>

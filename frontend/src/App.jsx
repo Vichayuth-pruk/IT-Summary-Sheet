@@ -26,6 +26,7 @@ import Sheet from "./pages/Sheet"
 import Checkout from "./pages/Checkout"
 import Sheetedit from "./pages/Sheetedit"
 import Mysheet from "./pages/Mysheet"
+import Shop from "./pages/Shop"
 
 function App() {
   const navigate = useNavigate()
@@ -94,6 +95,7 @@ function App() {
               element={<Sheetedit meta={"login"} />}
             />
             <Route path="/mysheet/:id" element={<Mysheet meta={"login"} />} />
+            <Route path="/shop/:id" element={<Shop meta={"login"} />} />
           </Routes>
         </div>
       </AuthContext.Provider>

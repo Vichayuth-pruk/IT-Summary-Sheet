@@ -34,7 +34,13 @@ function Favorite(props) {
     )
   return (
     <>
-      <div className="h2">ชีทที่อยากได้</div>
+      <div className="h2">
+        ชีทที่อยากได้{" "}
+        <span className="badge badge-sm rounded-pill bg-danger ">
+          {data.favorites.length}
+        </span>{" "}
+        รายการ
+      </div>
       <hr />
       <br />
       <div className="row">
@@ -77,6 +83,9 @@ function Favorite(props) {
           </div>
         ))}
       </div>
+      {data.favorites.length === 0 && (
+        <div className="text-center h4">ไม่มี</div>
+      )}
     </>
   )
 }

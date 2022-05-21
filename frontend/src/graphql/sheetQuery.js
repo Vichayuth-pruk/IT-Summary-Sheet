@@ -48,6 +48,10 @@ export const SHEET_BY_USERID_QUERY = gql`
       programme
       sheetFile
       price
+      user {
+        username
+        fullname
+      }
       userId
       createdAt
     }
