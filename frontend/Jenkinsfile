@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    stages {
+        stage("Pull code") {
+            steps {
+                checkout scm
+            }
+        }
+        stage("Download dependencies") {
+            steps {
+                sh "cd frontend && npm install"
+            }
+        }
+        stage("Make env") {
+            steps {
+                withCredentials([file(credentialsId: 'ITSUMMARYSHEET_ENV', variable: 'FRONTEND_ENV')]) {
+                    script {
+                        sh "cd frontend"
+                        writeFile(file: '.env', text: readFile(FRONTEND_ENV))
+                    }
+                }
+            }
+        }
+        stage("Build frontend") {
+            steps {
+                sh "cd frontend && npm run build"
+            }
+        }
+    }
+}
