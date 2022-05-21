@@ -22,8 +22,8 @@ services:
     env_file:
       - ./frontend/.env
     ports:
-      - "80:4173"
-      - "443:4173"
+      - "80:80"
+      - "443:80"
     volumes:
       - ./frontend:/frontend
     networks:

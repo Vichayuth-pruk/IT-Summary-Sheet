@@ -5,5 +5,7 @@ RUN yarn install
 COPY ./ .
 RUN yarn build
 
-EXPOSE 4173
-CMD ["npm", "start"]
+FROM nginx as production-stage
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf

@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "production"
-      ? ["https://itsummarysheet.herokuapp.com", "http://localhost:443", "http://localhost:80"]
+      ? ["https://itsummarysheet.herokuapp.com", "http://localhost"]
       : true,
   credentials: true,
 }
