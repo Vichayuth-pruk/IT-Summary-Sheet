@@ -13,7 +13,7 @@ function Checkout(props) {
   }, [])
 
   const [checked, setChecked] = useState(true)
-  
+
   //MockData
   let ordersMock = [
     {
@@ -33,7 +33,7 @@ function Checkout(props) {
   let price = allPrice.reduce((a, b) => a + b, 0)
   // console.log('price: ', price);
 
-  function payHHandler(price) {
+  function payHandler(price) {
     Swal.fire({
       title: `ยืนยันการชำระเงิน ยอดชำระ ${price} บาท`,
       // text: `ยอดชำระ ${price} บาท`,
@@ -86,7 +86,7 @@ function Checkout(props) {
             </div>
             <div className="text-center d-grid gap-2 mt-5" >
               <h2 className="fw-bold text-danger">ยอดชำระเงิน ฿{ price }</h2>
-              <button type="button" className="btn btn-success" onClick={() => payHHandler(price)}>ชำระเงิน</button>
+              <button type="button" className="btn btn-success" onClick={() => payHandler(price)}>ชำระเงิน</button>
             </div>
           </div>
         </div>
