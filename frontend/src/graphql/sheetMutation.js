@@ -7,3 +7,11 @@ export const SHEET_MUTATION = gql`
     }
   }
 `
+
+export const DELETE_SHEET_MUTATION = gql`
+  mutation deleteSheet($sheetId: MongoID!) {
+    deleteSheet(sheetId: $sheetId) {
+      _id
+    }
+  }
+`

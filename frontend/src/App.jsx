@@ -74,7 +74,9 @@ function App() {
             <Route path="/myreview" element={<Myreview meta={"login"} />} />
             <Route
               path="/sheetsmanage"
-              element={<Sheetsmanage meta={"login"} />}
+              element={
+                <Sheetsmanage meta={"login"} fav={favoriteByUserId.refetch} />
+              }
             />
             <Route
               path="/createsheet"

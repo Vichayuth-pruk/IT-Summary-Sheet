@@ -3,7 +3,8 @@ import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
 import { useNavigate, Link } from "react-router-dom"
 import { SHEET_BY_USERID_QUERY } from "../graphql/sheetQuery"
-import { useQuery } from "@apollo/client"
+import { DELETE_SHEET_MUTATION } from "../graphql/sheetMutation"
+import { useQuery, useMutation } from "@apollo/client"
 import moment from "moment"
 
 function Sheetsmanage(props) {
@@ -22,6 +23,21 @@ function Sheetsmanage(props) {
     },
     skip: !me._id,
   })
+
+  const [deleteSheet] = useMutation(DELETE_SHEET_MUTATION)
+  const onSubmitDeleteSheet = async (sheetId) => {
+    try {
+      await deleteSheet({
+        variables: {
+          sheetId,
+        },
+      })
+      await refetch()
+      await props.fav()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   if (loading)
     return (
@@ -49,10 +65,48 @@ function Sheetsmanage(props) {
       <div className="row">
         {data.sheets.map((sheet) => (
           <div key={sheet._id} className="col-lg-3 col-md-4 col-sm-12 mb-3">
-            <Link to={"/sheet/" + sheet._id} style={{ textDecoration: "none" }}>
-              <div
-                className="border p-3 h-100 w-100 text-dark"
-                style={{ borderRadius: "10px" }}
+            <div
+              className="border p-3 h-100 w-100 text-dark"
+              style={{ borderRadius: "10px" }}
+            >
+              <div className="text-end">
+                <div className="dropdown">
+                  <button
+                    className="btn"
+                    type="button"
+                    id={"dropdownMenuButton" + sheet._id}
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i className="fa-solid fa-ellipsis" />
+                  </button>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby={"dropdownMenuButton" + sheet._id}
+                  >
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to={"/sheet/" + sheet._id}
+                      >
+                        แก้ไข
+                      </Link>
+                    </li>
+                    <li>
+                      <a
+                        className="dropdown-item text-danger"
+                        onClick={() => onSubmitDeleteSheet(sheet._id)}
+                      >
+                        ลบ
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <Link
+                to={"/sheet/" + sheet._id}
+                style={{ textDecoration: "none" }}
+                className="text-dark"
               >
                 <div className="h5">{sheet.courseTitle}</div>
 
@@ -78,8 +132,8 @@ function Sheetsmanage(props) {
                   ขายเมื่อ {moment(sheet.createAt).format("DD/MM/YYYY HH:mm")}{" "}
                   น.
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
         ))}
       </div>

@@ -209,9 +209,13 @@ function Createsheet(props) {
               <Link to="/sheetsmanage">
                 <button className="btn btn-secondary me-3">ยกเลิก</button>
               </Link>
-              <button className="btn btn-primary" type="submit">
-                ขาย
-              </button>
+              {progress === 100 || progress === 0 ? (
+                <button className="btn btn-primary" type="submit">
+                  ขาย
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </form>
