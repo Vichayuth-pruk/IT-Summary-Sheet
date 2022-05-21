@@ -34,7 +34,7 @@ const startApolloServer = async () => {
   const httpServer = createServer(app)
   const apolloServer = new ApolloServer({
     schema,
-    introspection: false,
+    introspection: true,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginLandingPageGraphQLPlayground(),
