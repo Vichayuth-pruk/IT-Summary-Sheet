@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
 import { useNavigate } from "react-router-dom"
-import StarRatings from "react-star-ratings"
+import Rating from "@mui/material/Rating"
 
 function Search(props) {
   // Middleware
@@ -124,17 +124,19 @@ function Search(props) {
                     <p className="card-text">หลักสูตร: {item.program}</p>
                     <p className="card-text">โดย: {item.author}</p>
                     <div className="row">
-                      <div className=" col-md-6 col-sm-12">
-                        <StarRatings
-                          rating={item.rating}
-                          starDimension="12px"
-                          starRatedColor="orange"
-                          starSpacing="5px"
-                        />
+                      <div className="col-lg-6 col-md-6 col-sm-12">
+                      <Rating
+                        name="simple-controlled"
+                        defaultValue={item.rating}
+                        precision={0.5}
+                        readOnly
+                        className="mb-2"
+                        size="small"
+                      />
                       </div>
-                      <div className=" col-md-6 col-sm-12 d-flex justify-content-center">
+                      <div className="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-center">
                         <span>
-                          <button className="btn btn-outline-dark ml-10">
+                          <button className="btn btn-outline-dark ml-10 ">
                             ฿{item.price}
                           </button>
                         </span>
