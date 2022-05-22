@@ -27,7 +27,7 @@ app.use(cors(corsOptions))
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Hello This is IT Summary Sheet API" + process.env.NODE_ENV,
+    message: "Hello This is IT Summary Sheet API",
   })
 })
 
