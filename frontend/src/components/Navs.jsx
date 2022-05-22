@@ -143,12 +143,13 @@ function Navs(props) {
                           <hr className="dropdown-divider" />
                         </li>
                         <li>
-                          <a
+                          <span
+                            style={{ cursor: "pointer" }}
                             className="dropdown-item text-danger"
                             onClick={props.logout}
                           >
                             ออกจากระบบ
-                          </a>
+                          </span>
                         </li>
                       </ul>
                     </li>

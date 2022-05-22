@@ -4,6 +4,24 @@ import { generateUserToken } from "../../lib/generateUserToken"
 
 export const createUser = UserTC.getResolver("createOne")
 export const updateUser = UserTC.getResolver("updateById")
+export const addItcoin = schemaComposer.createResolver({
+  name: "addItcoin",
+  kind: "mutation",
+  type: UserTC,
+  args: {
+    itcoin: "Float!",
+  },
+  resolve: async ({ source, args, context, info }) => {
+    const { userId: _id } = context
+    const user = await UserModel.findById(_id)
+    if (!user) {
+      throw new Error("User not found")
+    }
+    user.itcoin += args.itcoin
+    await user.save()
+    return user
+  },
+})
 const ChangePasswordPayLoadOTC = schemaComposer.createObjectTC({
   name: "ChangePasswordPayLoadOTC",
   fields: {

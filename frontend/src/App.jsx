@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom"
+import { useEffect } from "react"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { useQuery } from "@apollo/client"
 import AuthContext from "./contexts/authContext"
 import Cookies from "js-cookie"
@@ -30,6 +31,10 @@ import Shop from "./pages/Shop"
 import Notfound from "./pages/Notfound"
 
 function App() {
+  useEffect(() => {
+    const { pathname } = location
+    refetch()
+  }, [location.pathname])
   const navigate = useNavigate()
   const { loading, error, data, refetch } = useQuery(ME_QUERY)
   const logout = async () => {
@@ -59,7 +64,7 @@ function App() {
         <div className="my-5 container">
           <Routes>
             <Route path="*" element={<Notfound />} />
-            <Route path="/" element={<Home meta={""} />} />
+            <Route path="/" exact element={<Home meta={""} />} />
             <Route
               path="/signin"
               element={<Signin meta={"guest"} refetch={refetch} />}
@@ -73,7 +78,10 @@ function App() {
               path="/changepassword"
               element={<Changepassword meta={"login"} logout={logout} />}
             />
-            <Route path="/itcoin" element={<Itcoin meta={"login"} />} />
+            <Route
+              path="/itcoin"
+              element={<Itcoin meta={"login"} refetch={refetch} />}
+            />
             <Route path="/history" element={<History meta={"login"} />} />
             <Route path="/mysheets" element={<Mysheets meta={"login"} />} />
             <Route path="/myreview" element={<Myreview meta={"login"} />} />

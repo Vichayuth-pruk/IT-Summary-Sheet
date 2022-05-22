@@ -24,6 +24,7 @@ const SheetSchema = new Schema(
     price: {
       type: Number,
       required: true,
+      index: true,
     },
     userId: {
       type: Schema.Types.ObjectId,

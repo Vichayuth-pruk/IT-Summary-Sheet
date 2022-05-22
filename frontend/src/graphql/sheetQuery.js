@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
 export const SHEET_QUERY = gql`
-  query {
-    sheets {
+  query Sheets($sort: SortFindManySheetInput) {
+    sheets(sort: $sort) {
       _id
       courseTitle
       year
@@ -10,6 +10,11 @@ export const SHEET_QUERY = gql`
       sheetFile
       price
       userId
+      user {
+        _id
+        username
+        fullname
+      }
       createdAt
     }
   }
