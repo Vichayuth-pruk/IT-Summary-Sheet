@@ -1,90 +1,41 @@
 import React, { useEffect, useContext, useState } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { Rating } from "@mui/material"
 
 function Mysheets(props) {
   // Middleware
-
-  const [searchBox, setSearch] = useState("")
   const me = useContext(AuthContext)
   const navigate = useNavigate()
   useEffect(() => {
     isLoggedIn(props.meta, me, navigate)
+    setMines(me.mines)
   }, [])
 
-  //MockData
-  let sheetsMock = [
-    {
-      courseTitle: "COMPUTER PROGRAMMING",
-      year: "1",
-      programme: "IT",
-      sheetFile: "",
-      price: 177.0,
-      userId: "1011",
-      _id: "1",
-      createdAt: "",
-      updatedAt: "",
-      favorite: "",
-      username: "Bob",
-    },
-    {
-      courseTitle: "MULTIMEDIA TECHNOLOGY",
-      year: "1",
-      programme: "IT",
-      sheetFile: "",
-      price: 100.0,
-      userId: "1012",
-      _id: "2",
-      createdAt: "",
-      updatedAt: "",
-      favorite: "",
-      username: "Alice",
-    },
-    {
-      courseTitle: "DISCRETE MATHEMATICS",
-      year: "1",
-      programme: "IT",
-      sheetFile: "",
-      price: 120.0,
-      userId: "1013",
-      _id: "1",
-      createdAt: "",
-      updatedAt: "",
-      favorite: "",
-      username: "Dog",
-    },
-    {
-      courseTitle: "SOFTWARE VERIFICATION AND VALIDATION",
-      year: "3",
-      programme: "IT",
-      sheetFile: "",
-      price: 150.0,
-      userId: "1014",
-      _id: "2",
-      createdAt: "",
-      updatedAt: "",
-      favorite: "",
-      username: "Cat",
-    },
-  ]
+  const [mines, setMines] = useState([])
+  const [srload, setSrload] = useState(false)
 
-  const [dataList, setDataList] = useState(sheetsMock)
-  const [filterDataList, setFilterDataList] = useState(dataList)
-
-  useEffect(() => {
-    setFilterDataList(() =>
-      dataList.filter((data) =>
-        data.courseTitle.toLowerCase().includes(searchBox.toLowerCase())
+  const handleSearch = (e) => {
+    setMines([])
+    setSrload(true)
+    setTimeout(() => {
+      if (e === "" || e === undefined) {
+        setMines(me.mines)
+        setSrload(false)
+        return
+      }
+      let result = me.mines.filter(
+        (sheet) => sheet.courseTitle.search(e.toUpperCase()) !== -1
       )
-    )
-  }, [searchBox])
+      setMines(result)
+      setSrload(false)
+    }, 300)
+  }
 
   return (
     <>
       <div className="h2 row justify-content-center">ชีทของฉัน</div>
-      {console.log(searchBox)}
       <br />
       <div className="row">
         <div className="row mt-5">
@@ -95,7 +46,7 @@ function Mysheets(props) {
                 type="search"
                 id="example-search-input"
                 placeholder="search"
-                onChange={(text) => setSearch(text.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
               />
               <span className="input-group-append">
                 <button
@@ -109,13 +60,21 @@ function Mysheets(props) {
           </div>
         </div>
       </div>
-
       <hr />
       <br />
-
+      {srload && (
+        <div className="h1 text-center">
+          <br />
+          <br />
+          <br />
+          <div className="spinner-grow text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       <div className="container">
         <div className="row">
-          {filterDataList.map((item, index) => {
+          {mines.map((item, index) => {
             return (
               <div className="col-lg-4" key={index}>
                 <div
@@ -128,26 +87,27 @@ function Mysheets(props) {
                 >
                   <div className="card-body">
                     <h5 className="card-title">วิชา {item.courseTitle}</h5>
-                    <h6 className="card-text">โดย {item.username}</h6>
+                    <h6 className="card-text">
+                      โดย{" "}
+                      <Link to={"/shop/" + item.user._id}>
+                        <span className="badge rounded-pill bg-primary ">
+                          {item.user.username}
+                        </span>
+                      </Link>
+                    </h6>
                     <h6 className="card-text">
                       ปี {item.year} สาขา {item.programme}
                     </h6>
-                    <h5 className="card-text text-end fw-bold">
-                      ราคา ฿{item.price}
-                    </h5>
-                    <div>
-                      <Rating
-                        name="simple-controlled"
-                        defaultValue={item.rating}
-                        precision={0.5}
-                        readOnly
-                      />
-                    </div>
-                    <div className="d-grid gap-2">
-                      <button type="button" className="btn btn-outline-dark">
-                        รายละเอียด
-                      </button>
-                    </div>
+                    <Link
+                      to={"/mysheet/" + index + "?pov=buyer"}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div className="d-grid gap-2">
+                        <button type="button" className="btn btn-outline-dark">
+                          ดูชีท
+                        </button>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -155,6 +115,11 @@ function Mysheets(props) {
           })}
         </div>
       </div>
+      {mines.length === 0 && srload === false ? (
+        <div className="text-center">
+          <h3>ไม่มีชีท</h3>
+        </div>
+      ) : null}
       <br />
     </>
   )

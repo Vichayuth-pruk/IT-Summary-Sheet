@@ -10,6 +10,7 @@ export const GET_USER_QUERY = gql`
       username
       role
       itcoin
+      mines
     }
   }
 `

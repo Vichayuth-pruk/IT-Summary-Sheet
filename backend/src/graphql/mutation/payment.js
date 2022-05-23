@@ -31,7 +31,7 @@ export const createPayment = schemaComposer.createResolver({
     const payment = await PaymentModel.create({
       ...args.record,
       items: args.record.items.map(
-        (item) => `${item.sheet.courseTitle} (${item.user.username})`
+        (item) => `${item.sheet.courseTitle} (${item.sheet.user.username})`
       ),
       userId: _id,
       state: "success",

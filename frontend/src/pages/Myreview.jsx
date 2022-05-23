@@ -1,8 +1,10 @@
 import React, { useEffect, useContext } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import Rating from "@mui/material/Rating"
+import { useQuery } from "@apollo/client"
+import { COMMENT_QUERY } from "../graphql/commentQuery"
 
 function Myreview(props) {
   // Middleware
@@ -10,25 +12,27 @@ function Myreview(props) {
   const navigate = useNavigate()
   useEffect(() => {
     isLoggedIn(props.meta, me, navigate)
+    refetch()
   }, [])
 
-  //MockData
-  let reviewMock = [
-    {
-      _id: "1",
-      sheetName: "COMPUTER PROGRAMMING (akira)",
-      review: "ดีมากกกกกกกกกกก",
-      createdAt: "12 มีนาคม 2022 23:47:07",
-      rating: 5,
+  // State
+  const { loading, error, data, refetch } = useQuery(COMMENT_QUERY, {
+    variables: {
+      filter: {
+        userId: me._id,
+      },
     },
-    {
-      _id: "2",
-      sheetName: "MULTIMEDIA TECHNOLOGY (docxed)",
-      review: "ดีโครตตตตตตตตตต",
-      createdAt: "13 มีนาคม 2022 22:22:22",
-      rating: 4.5,
-    },
-  ]
+    skip: !me?._id,
+  })
+
+  if (loading)
+    return (
+      <div className="text-end">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    )
   return (
     <>
       <div className="h2">รีวิวของฉัน</div>
@@ -38,7 +42,7 @@ function Myreview(props) {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            {reviewMock.map((item, index) => {
+            {data.comments.map((item) => {
               return (
                 <div
                   className="card mb-3 p-2"
@@ -46,27 +50,43 @@ function Myreview(props) {
                     borderRadius: "15px",
                     boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                   }}
-                  key={index}
+                  key={item._id}
                 >
-                  <div className="card-body">
-                    <h5 className="card-title">{item.sheetName}</h5>
-                    <div>
-                      <Rating
-                        name="simple-controlled"
-                        defaultValue={item.rating}
-                        precision={0.5}
-                        readOnly
-                      />
+                  <Link
+                    className="text-dark"
+                    to={"/sheet/" + item.sheet._id}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        {item.sheet.courseTitle} ({item.sheet.user.username})
+                      </h5>
+                      <div>
+                        <Rating
+                          name="read-only"
+                          value={
+                            data.comments.reduce((a, b) => a + b.rating, 0) /
+                            data.comments.length
+                          }
+                          readOnly
+                          precision={0.5}
+                        />
+                      </div>
+                      <p className="card-text">{item.description}</p>
+                      <p className="card-text text-end">{item.dates}</p>
                     </div>
-                    <p className="card-text">{item.review}</p>
-                    <p className="card-text text-end">{item.createdAt}</p>
-                  </div>
+                  </Link>
                 </div>
               )
             })}
           </div>
         </div>
       </div>
+      {data.comments.length === 0 ? (
+        <div className="text-center">
+          <h3>ไม่มีรีวิว</h3>
+        </div>
+      ) : null}
     </>
   )
 }

@@ -30,7 +30,6 @@ function Home(props) {
   })
 
   const onChangeOrder = (e) => {
-    console.log(e.target.value)
     switch (e.target.value) {
       case "มาใหม่":
         setOrderBy("_ID_DESC")
