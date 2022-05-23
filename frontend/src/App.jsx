@@ -6,6 +6,7 @@ import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
 import { ME_QUERY } from "./graphql/meQuery"
 import { FAVORITE_BY_USERID_QUERY } from "./graphql/favoriteQuery"
+import { CART_BY_USERID_QUERY } from "./graphql/cartQuery"
 
 // Use routes
 import Navs from "./components/Navs"
@@ -48,8 +49,14 @@ function App() {
     },
     skip: !data?.me?._id,
   })
+  const cartByUserId = useQuery(CART_BY_USERID_QUERY, {
+    variables: {
+      userId: data?.me?._id,
+    },
+    skip: !data?.me?._id,
+  })
 
-  if (loading || favoriteByUserId.loading)
+  if (loading || favoriteByUserId.loading || cartByUserId.loading)
     return (
       <div className="text-end">
         <div className="spinner-border text-primary" role="status">
@@ -60,7 +67,12 @@ function App() {
   return (
     <>
       <AuthContext.Provider value={data?.me}>
-        <Navs me={data?.me} logout={logout} fav={favoriteByUserId.data} />
+        <Navs
+          me={data?.me}
+          logout={logout}
+          fav={favoriteByUserId.data}
+          cart={cartByUserId.data}
+        />
         <div className="my-5 container">
           <Routes>
             <Route path="*" element={<Notfound />} />
@@ -88,7 +100,11 @@ function App() {
             <Route
               path="/sheetsmanage"
               element={
-                <Sheetsmanage meta={"login"} fav={favoriteByUserId.refetch} />
+                <Sheetsmanage
+                  meta={"login"}
+                  fav={favoriteByUserId.refetch}
+                  cart={cartByUserId.refetch}
+                />
               }
             />
             <Route
@@ -97,9 +113,24 @@ function App() {
             />
             <Route
               path="/sheet/:id"
-              element={<Sheet meta={"login"} fav={favoriteByUserId.refetch} />}
+              element={
+                <Sheet
+                  meta={"login"}
+                  fav={favoriteByUserId.refetch}
+                  cart={cartByUserId.refetch}
+                />
+              }
             />
-            <Route path="/checkout" element={<Checkout meta={"login"} />} />
+            <Route
+              path="/checkout"
+              element={
+                <Checkout
+                  meta={"login"}
+                  fav={favoriteByUserId.refetch}
+                  cart={cartByUserId.refetch}
+                />
+              }
+            />
             <Route
               path="/sheetedit/:id"
               element={<Sheetedit meta={"login"} />}

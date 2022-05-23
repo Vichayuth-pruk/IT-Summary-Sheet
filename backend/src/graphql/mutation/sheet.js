@@ -1,6 +1,7 @@
 import { schemaComposer } from "graphql-compose"
 import { SheetModel, SheetTC } from "../../models/sheet"
 import { FavoriteModel } from "../../models/favorite"
+import { CartModel } from "../../models/cart"
 
 export const createSheet = SheetTC.getResolver("createOne")
 export const updateSheet = SheetTC.getResolver("updateById")
@@ -18,6 +19,7 @@ export const deleteSheet = schemaComposer.createResolver({
     }
     await sheet.remove()
     await FavoriteModel.deleteMany({ sheetId: sheetId })
+    await CartModel.deleteMany({ sheetId: sheetId })
 
     return sheet
   },

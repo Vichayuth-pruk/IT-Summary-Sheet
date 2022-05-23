@@ -37,6 +37,10 @@ const UserSchema = new Schema(
       type: Number,
       default: 0,
     },
+    mines: {
+      type: Array,
+      default: [],
+    },
   },
   {
     timestamps: true,
