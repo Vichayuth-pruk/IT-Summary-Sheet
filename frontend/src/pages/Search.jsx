@@ -125,14 +125,14 @@ function Search(props) {
                     <p className="card-text">โดย: {item.author}</p>
                     <div className="row">
                       <div className="col-lg-6 col-md-6 col-sm-12">
-                      <Rating
-                        name="simple-controlled"
-                        defaultValue={item.rating}
-                        precision={0.5}
-                        readOnly
-                        className="mb-2"
-                        size="small"
-                      />
+                        <Rating
+                          name="simple-controlled"
+                          defaultValue={item.rating}
+                          precision={0.5}
+                          readOnly
+                          className="mb-2"
+                          size="small"
+                        />
                       </div>
                       <div className="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-center">
                         <span>

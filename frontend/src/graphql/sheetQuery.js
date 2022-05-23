@@ -15,6 +15,19 @@ export const SHEET_QUERY = gql`
         username
         fullname
       }
+      comment {
+        _id
+        description
+        rating
+        dates
+        userId
+        sheetId
+        user {
+          _id
+          username
+          fullname
+        }
+      }
       createdAt
     }
   }
@@ -44,6 +57,19 @@ export const GET_SHEET_QUERY = gql`
         sheetId
         userId
       }
+      comment {
+        _id
+        description
+        rating
+        dates
+        userId
+        sheetId
+        user {
+          _id
+          username
+          fullname
+        }
+      }
       userId
       createdAt
     }
@@ -63,6 +89,19 @@ export const SHEET_BY_USERID_QUERY = gql`
         _id
         username
         fullname
+      }
+      comment {
+        _id
+        description
+        rating
+        dates
+        userId
+        sheetId
+        user {
+          _id
+          username
+          fullname
+        }
       }
       userId
       createdAt

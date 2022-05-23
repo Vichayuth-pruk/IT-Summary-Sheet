@@ -36,10 +36,6 @@ function Home(props) {
         setOrderBy("_ID_DESC")
         setOrder("นิยม")
         break
-      case "ขายดี":
-        setOrderBy("_ID_DESC")
-        setOrder("ขายดี")
-        break
       case "ราคาน้อยไปมาก":
         setOrderBy("PRICE_ASC")
         setOrder("ราคาน้อยไปมาก")
@@ -91,19 +87,6 @@ function Home(props) {
             }
           >
             นิยม
-          </button>
-
-          <button
-            type="button"
-            value="ขายดี"
-            onClick={(e) => onChangeOrder(e)}
-            className={
-              order === "ขายดี"
-                ? "btn btn-primary me-2 btn-sm"
-                : "btn btn-outline-primary me-2 btn-sm"
-            }
-          >
-            ขายดี
           </button>
 
           <button
@@ -161,11 +144,13 @@ function Home(props) {
                     </h5>
                     <div>
                       <Rating
-                        name="simple-controlled"
-                        defaultValue={3}
-                        precision={0.5}
+                        name="read-only"
+                        value={
+                          item.comment.reduce((a, b) => a + b.rating, 0) /
+                          item.comment.length
+                        }
                         readOnly
-                        className="mb-3"
+                        precision={0.5}
                       />
                     </div>
                     <div className="d-grid gap-2">

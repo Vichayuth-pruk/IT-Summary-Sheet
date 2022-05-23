@@ -50,7 +50,7 @@ function Mysheet(props) {
             <div className="card">
               <div className="card-body">
                 <div className="h5 mb-3">ชั้นปี {data.sheetId.year}</div>
-                <div className="h5 mb-3">หลักสูตร {data.sheetId.programme}</div>
+                <div className="h5 mb-3">สาขา {data.sheetId.programme}</div>
                 <div className="h5 mb-3">
                   โดย{" "}
                   <Link to={"/shop/" + data.sheetId.userId}>
