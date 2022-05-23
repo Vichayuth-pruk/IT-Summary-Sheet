@@ -63,9 +63,7 @@ function Navs(props) {
                 <li className="nav-item">
                   <Link className="nav-link" to="/favorite">
                     <i className="fa-solid fa-heart" /> ชีทที่อยากได้{" "}
-                    {props.fav?.favorites?.length === 0 ? (
-                      <></>
-                    ) : (
+                    {props.fav?.favorites?.length === 0 ? null : (
                       <span className="badge rounded-pill bg-danger">
                         {props.fav?.favorites?.length ?? ""}
                       </span>
@@ -74,7 +72,12 @@ function Navs(props) {
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/cart">
-                    <i className="fa-solid fa-cart-shopping" /> ตะกร้า
+                    <i className="fa-solid fa-cart-shopping" /> ตะกร้า{" "}
+                    {props.cart?.carts?.length === 0 ? null : (
+                      <span className="badge rounded-pill bg-danger">
+                        {props.cart?.carts?.length ?? ""}
+                      </span>
+                    )}
                   </Link>
                 </li>
                 {props.me ? (

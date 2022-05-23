@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
-export const FAVORITE_QUERY = gql`
+export const CART_QUERY = gql`
   query {
-    favorites {
+    carts {
       _id
       sheet {
         _id
@@ -27,9 +27,9 @@ export const FAVORITE_QUERY = gql`
   }
 `
 
-export const FAVORITE_BY_USERID_QUERY = gql`
-  query Favorites($userId: MongoID!) {
-    favorites(filter: { userId: $userId }) {
+export const CART_BY_USERID_QUERY = gql`
+  query Carts($userId: MongoID!) {
+    carts(filter: { userId: $userId }) {
       _id
       sheet {
         _id

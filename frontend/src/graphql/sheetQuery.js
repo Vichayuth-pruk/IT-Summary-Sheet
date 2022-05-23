@@ -30,10 +30,16 @@ export const GET_SHEET_QUERY = gql`
       sheetFile
       price
       user {
+        _id
         username
         fullname
       }
       favorite(filter: { sheetId: $sheetId }) {
+        _id
+        sheetId
+        userId
+      }
+      cart(filter: { sheetId: $sheetId }) {
         _id
         sheetId
         userId
@@ -54,6 +60,7 @@ export const SHEET_BY_USERID_QUERY = gql`
       sheetFile
       price
       user {
+        _id
         username
         fullname
       }

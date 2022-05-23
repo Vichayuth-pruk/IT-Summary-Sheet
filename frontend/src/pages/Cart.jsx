@@ -2,6 +2,9 @@ import React, { useEffect, useContext } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
 import { useNavigate, Link } from "react-router-dom"
+import { CART_BY_USERID_QUERY } from "../graphql/cartQuery"
+import { DELETE_CART_MUTATION } from "../graphql/cartMutation"
+import { useQuery, useMutation } from "@apollo/client"
 
 function Cart(props) {
   // Middleware
@@ -9,101 +12,121 @@ function Cart(props) {
   const navigate = useNavigate()
   useEffect(() => {
     isLoggedIn(props.meta, me, navigate)
+    refetch()
   }, [])
 
-  let test_data = [
-    {
-      _id: "0",
-      subject: "computer programming",
-      author: "Prakorn TONNY",
-      username: "ZIM",
-      year: "ปี2เทอม1",
-      program: "IT",
-      img: "https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_960_720.jpg",
-      rating: 5,
-      price: 240,
+  // State
+  const { loading, error, data, refetch } = useQuery(CART_BY_USERID_QUERY, {
+    variables: {
+      userId: me?._id,
     },
-    {
-      _id: "1",
-      subject: "Computer Organization",
-      author: "GUMMY TOKKI",
-      username: "ZAM",
-      year: "ปี2เทอม1",
-      program: "IT",
-      img: "https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_960_720.jpg",
-      rating: 4.3,
-      price: 170,
-    },
-    {
-      _id: "2",
-      subject: "COMPUTER Vision",
-      author: "DEMMY BASS",
-      username: "DRUM",
-      year: "วิชาเลือก",
-      program: "-",
-      img: "https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_960_720.jpg",
-      rating: 3.8,
-      price: 210,
-    },
-    {
-      _id: "3",
-      subject: "Requirement Engineer",
-      author: "DEMMY SOURCE",
-      username: "LEAP",
-      year: "ปี2เทอม2",
-      program: "SE",
-      img: "https://cdn.pixabay.com/photo/2016/10/18/21/22/beach-1751455_960_720.jpg",
-      rating: 4.5,
-      price: 310,
-    },
-  ]
+    skip: !me?._id,
+  })
 
-  return (
-    <>
-      <div className="h2 text-center">ตะกร้า</div>
-      <hr />
-      <br />
-      <div className="container">
-        {test_data.map((item, index) => {
-          return (
-            <div key={index}>
-              <div className="row m-4">
-                <div className="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center m-auto">
-                  <i className="fa-solid fa-file-lines fa-3x"></i>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-12 mt-3">
-                  <h5>
-                    {item.subject} ({item.username})
-                  </h5>
-                  <p>
-                    {item.year} สาขา {item.program}
-                  </p>
-                  <p>฿{item.price}</p>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center m-auto">
-                  <button className="btn btn-outline-secondary">ลบ</button>
-                </div>
-              </div>
-              <hr />
-            </div>
-          )
-        })}
+  const [deleteCart] = useMutation(DELETE_CART_MUTATION)
+  const submitDeleteCart = async (cartId) => {
+    try {
+      await deleteCart({
+        variables: {
+          cartId: cartId,
+        },
+      })
+      await refetch()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-        <div className="container d-flex justify-content-center mb-5">
-          <Link to="/search">เลือกซื้อหนังสือเล่มอื่นต่อ</Link>
-        </div>
-
-        <div className="container d-flex justify-content-center bg-secondary text-white p-2">
-          <div className="row d-flex justify-content-center">
-            <h5 className=" d-flex justify-content-center mb-3">
-              ยอดชำระ ฿720
-            </h5>
-            <Link to="/checkout" className="btn col-8">
-              <button className="btn btn-info">ไปที่หน้าชำระเงิน</button>
-            </Link>
-          </div>
+  if (loading)
+    return (
+      <div className="text-end">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
+    )
+  return (
+    <>
+      <div className="h2">
+        ตะกร้า{" "}
+        <span className="badge rounded-pill bg-danger ">
+          {data.carts.length}
+        </span>{" "}
+        รายการ
+      </div>
+      <hr />
+      <br />
+
+      {data.carts.length === 0 ? (
+        <div className="text-center h4">ไม่มี</div>
+      ) : (
+        <div className="container">
+          {data.carts.map((cart, index) => {
+            return (
+              <div key={cart._id}>
+                <div className="row m-4">
+                  <Link
+                    to={"/sheet/" + cart.sheet._id}
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div className="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center m-auto">
+                      <i className="fa-solid fa-file-lines fa-3x"></i>
+                    </div>
+                    <div className="col-lg-4 col-md-4 col-sm-12 mt-3">
+                      <h5>
+                        {cart.sheet.courseTitle} ({cart.user.username})
+                      </h5>
+                      <p>
+                        ปี {cart.sheet.year} สาขา {cart.sheet.programme}
+                      </p>
+                      <p>
+                        ราคา{" "}
+                        {cart.sheet.price.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        itcoin
+                      </p>
+                    </div>
+                  </Link>
+                  <div className="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center m-auto">
+                    <button
+                      className="btn btn-outline-secondary"
+                      onClick={() => submitDeleteCart(cart._id)}
+                    >
+                      ลบ
+                    </button>
+                  </div>
+                </div>
+                <hr />
+              </div>
+            )
+          })}
+
+          <div className="container d-flex justify-content-center mb-5">
+            <Link to="/search">เลือกซื้อหนังสือเล่มอื่นต่อ</Link>
+          </div>
+
+          <div className="container d-flex justify-content-center bg-secondary text-white p-2">
+            <div className="row d-flex justify-content-center">
+              <h5 className=" d-flex justify-content-center mb-3">
+                ยอดชำระ{" "}
+                {data.carts
+                  .reduce((a, b) => a + b.sheet.price, 0)
+                  .toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                itcoin
+              </h5>
+              <Link to="/checkout" className="btn col-8">
+                <button className="btn btn-info">ไปที่หน้าชำระเงิน</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

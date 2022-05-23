@@ -46,6 +46,7 @@ function Sheetsmanage(props) {
           })
           await refetch()
           await props.fav()
+          await props.cart()
         } catch (error) {
           console.log(error)
         }
@@ -68,7 +69,8 @@ function Sheetsmanage(props) {
         จัดการชีทที่ลงขาย{" "}
         <span className="badge rounded-pill bg-primary ">
           {data.sheets.length}
-        </span>
+        </span>{" "}
+        รายการ
       </div>
       <div className="text-end">
         <Link to="/createsheet">
