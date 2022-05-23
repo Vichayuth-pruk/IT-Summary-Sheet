@@ -7,6 +7,7 @@ import { DELETE_SHEET_MUTATION } from "../graphql/sheetMutation"
 import { useQuery, useMutation } from "@apollo/client"
 import moment from "moment"
 import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
+import Rating from "@mui/material/Rating"
 
 function Sheetsmanage(props) {
   // Middleware
@@ -135,7 +136,18 @@ function Sheetsmanage(props) {
                 <div className="h5">{sheet.courseTitle}</div>
 
                 <div>ชั้นปี {sheet.year}</div>
-                <div>หลักสูตร {sheet.programme}</div>
+                <div>สาขา {sheet.programme}</div>
+                <div>
+                  <Rating
+                    name="read-only"
+                    value={
+                      sheet.comment.reduce((a, b) => a + b.rating, 0) /
+                      sheet.comment.length
+                    }
+                    readOnly
+                    precision={0.5}
+                  />
+                </div>
                 <div className="text-center h5 my-3">
                   <b>
                     itcoin{" "}

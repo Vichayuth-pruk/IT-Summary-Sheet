@@ -159,7 +159,7 @@ function Sheetedit(props) {
             </div>
           </div>
           <div className="mb-3">
-            <label className="form-label">หลักสูตร</label>
+            <label className="form-label">สาขา</label>
             <select
               className="form-select"
               defaultValue={data.sheetId.programme}
@@ -170,7 +170,7 @@ function Sheetedit(props) {
               <option value="BIT">BIT</option>
             </select>
             <div className="mt-1 text-danger">
-              {errors.programme && "โปรดเลือกหลักสูตร"}
+              {errors.programme && "โปรดเลือกสาขา"}
             </div>
           </div>
           <div className="mb-3">

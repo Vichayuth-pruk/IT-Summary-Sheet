@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useQuery } from "@apollo/client"
 import { FAVORITE_BY_USERID_QUERY } from "../graphql/favoriteQuery"
 import moment from "moment"
+import Rating from "@mui/material/Rating"
 
 function Favorite(props) {
   // Middleware
@@ -57,7 +58,26 @@ function Favorite(props) {
                 <div className="h5">{f.sheet.courseTitle}</div>
 
                 <div>ชั้นปี {f.sheet.year}</div>
-                <div>หลักสูตร {f.sheet.programme}</div>
+                <div>สาขา {f.sheet.programme}</div>
+                <div>
+                  โดย{" "}
+                  <Link to={"/shop/" + f.sheet.user._id}>
+                    <span className="badge rounded-pill bg-primary ">
+                      {f.sheet.user.username}
+                    </span>
+                  </Link>
+                </div>
+                <div className="mt-2">
+                  <Rating
+                    name="read-only"
+                    value={
+                      f.sheet.comment.reduce((a, b) => a + b.rating, 0) /
+                      f.sheet.comment.length
+                    }
+                    readOnly
+                    precision={0.5}
+                  />
+                </div>
                 <div className="text-center h5 my-3">
                   <b>
                     itcoin{" "}

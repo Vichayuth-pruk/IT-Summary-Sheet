@@ -16,6 +16,19 @@ export const FAVORITE_QUERY = gql`
           username
           fullname
         }
+        comment {
+          _id
+          description
+          rating
+          dates
+          userId
+          sheetId
+          user {
+            _id
+            username
+            fullname
+          }
+        }
         createdAt
       }
       user {
@@ -42,6 +55,19 @@ export const FAVORITE_BY_USERID_QUERY = gql`
           _id
           username
           fullname
+        }
+        comment {
+          _id
+          description
+          rating
+          dates
+          userId
+          sheetId
+          user {
+            _id
+            username
+            fullname
+          }
         }
         createdAt
       }

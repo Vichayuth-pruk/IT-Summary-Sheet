@@ -145,14 +145,14 @@ function Createsheet(props) {
             </div>
           </div>
           <div className="mb-3">
-            <label className="form-label">หลักสูตร</label>
+            <label className="form-label">สาขา</label>
             <select className="form-select" {...register("programme")}>
               <option value="IT">IT</option>
               <option value="DSBA">DSBA</option>
               <option value="BIT">BIT</option>
             </select>
             <div className="mt-1 text-danger">
-              {errors.programme && "โปรดเลือกหลักสูตร"}
+              {errors.programme && "โปรดเลือกสาขา"}
             </div>
           </div>
           <div className="mb-3">
