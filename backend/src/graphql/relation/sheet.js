@@ -32,3 +32,20 @@ SheetTC.addRelation("comment", {
     filter: (sheet) => ({ sheetId: sheet._id }),
   },
 })
+SheetTC.addFields({
+  totalRating: {
+    type: "Int",
+    resolve: async (sheet) => {
+      const comments = await CommentTC.getResolver("findMany").resolve({
+        source: sheet,
+        args: {
+          filter: { sheetId: sheet._id },
+        },
+      })
+      const rating = comments.reduce((acc, comment) => {
+        return acc + comment.rating
+      }, 0)
+      return rating
+    },
+  },
+})

@@ -17,12 +17,16 @@ function Home(props) {
 
   // State
   const [order, setOrder] = useState("มาใหม่")
+  const [sheets, setSheets] = useState([])
   const [orderby, setOrderBy] = useState("_ID_DESC")
   const { loading, error, data, refetch } = useQuery(SHEET_QUERY, {
     variables: {
       sort: orderby,
     },
     skip: !orderby,
+    onCompleted: (data) => {
+      setSheets(data.sheets)
+    },
   })
 
   const onChangeOrder = (e) => {
@@ -31,21 +35,29 @@ function Home(props) {
       case "มาใหม่":
         setOrderBy("_ID_DESC")
         setOrder("มาใหม่")
+        refetch()
+        setSheets(data.sheets)
         break
       case "นิยม":
-        setOrderBy("_ID_DESC")
         setOrder("นิยม")
+        let raw = data.sheets.slice().sort((a, b) => {
+          return b.totalRating - a.totalRating
+        })
+        setSheets(raw)
         break
       case "ราคาน้อยไปมาก":
         setOrderBy("PRICE_ASC")
         setOrder("ราคาน้อยไปมาก")
+        refetch()
+        setSheets(data.sheets)
         break
       default:
         setOrderBy("_ID_DESC")
         setOrder("มาใหม่")
+        refetch()
+        setSheets(data.sheets)
         break
     }
-    refetch()
   }
 
   if (loading)
@@ -106,7 +118,7 @@ function Home(props) {
       <br />
       <div className="container">
         <div className="row">
-          {data.sheets.map((item, index) => {
+          {sheets.map((item, index) => {
             return (
               <div className="col-lg-4" key={index}>
                 <div

@@ -15,6 +15,7 @@ export const SHEET_QUERY = gql`
         username
         fullname
       }
+      totalRating
       comment {
         _id
         description
@@ -57,6 +58,7 @@ export const GET_SHEET_QUERY = gql`
         sheetId
         userId
       }
+      totalRating
       comment {
         _id
         description
@@ -90,6 +92,7 @@ export const SHEET_BY_USERID_QUERY = gql`
         username
         fullname
       }
+      totalRating
       comment {
         _id
         description

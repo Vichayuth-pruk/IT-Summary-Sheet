@@ -10,6 +10,7 @@ const CommentSchema = new Schema(
     rating: {
       type: Number,
       required: true,
+      index: true,
     },
     sheetId: {
       type: Schema.Types.ObjectId,
