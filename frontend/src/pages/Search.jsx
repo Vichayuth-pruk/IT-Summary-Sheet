@@ -110,37 +110,55 @@ function Search(props) {
         </button>
       </div>
 
-      <div className="m-4">
+      <div className="container m-4">
         <div className="row">
           {test_data.map((item, index) => {
             return (
-              <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
-                <div className="card  mb-4">
+              <div className="col-lg-4" key={index}>
+                <div
+                  className="card mb-3 p-2"
+                  style={{
+                    borderRadius: "15px",
+                    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                  }}
+                  key={index}
+                >
                   <div className="card-body">
-                    <p className="card-title">
-                      วิชา: {item.subject} ({item.username})
-                    </p>
-                    <p className="card-text">ชั้นปี: {item.year}</p>
-                    <p className="card-text">หลักสูตร: {item.program}</p>
-                    <p className="card-text">โดย: {item.author}</p>
-                    <div className="row">
-                      <div className="col-lg-6 col-md-6 col-sm-12">
-                        <Rating
-                          name="simple-controlled"
-                          defaultValue={item.rating}
-                          precision={0.5}
-                          readOnly
-                          className="mb-2"
-                          size="small"
-                        />
-                      </div>
-                      <div className="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-center">
-                        <span>
-                          <button className="btn btn-outline-dark ml-10 ">
-                            ฿{item.price}
-                          </button>
+                    <h5 className="card-title">วิชา {item.subject}</h5>
+                    <h6 className="card-text">
+                      โดย{" "}
+                        <span className="badge rounded-pill bg-primary ">
+                          {item.username}
                         </span>
-                      </div>
+                    </h6>
+                    <h6 className="card-text">
+                      ปี {item.year} สาขา {item.program}
+                    </h6>
+                    <h5 className="card-text text-end fw-bold">
+                      ราคา{" "}
+                      <span className="text-success">
+                        {item.price === 0
+                          ? "Free"
+                          : item.price.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                      </span>{" "}
+                      itcoin
+                    </h5>
+                    <div>
+                      <Rating
+                        name="simple-controlled"
+                        defaultValue={3}
+                        precision={item.rating}
+                        readOnly
+                        className="mb-3"
+                      />
+                    </div>
+                    <div className="d-grid gap-2">
+                        <button type="button" className="btn btn-outline-dark">
+                          รายละเอียด
+                        </button>
                     </div>
                   </div>
                 </div>
@@ -148,6 +166,7 @@ function Search(props) {
             )
           })}
         </div>
+
       </div>
     </>
   )

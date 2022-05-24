@@ -65,22 +65,27 @@ function Cart(props) {
             return (
               <div key={cart._id}>
                 <div className="row m-4">
+                  <div className="col-lg-10 col-md-12 col-sm-12  m-auto">
                   <Link
                     to={"/sheet/" + cart.sheet._id}
                     className="text-dark"
                     style={{ textDecoration: "none" }}
                   >
-                    <div className="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center m-auto">
+                    <div className="row m-1">
+                    <div className="col-lg-1 col-md-12 col-sm-12 d-flex justify-content-center  m-auto">
                       <i className="fa-solid fa-file-lines fa-3x"></i>
                     </div>
-                    <div className="col-lg-4 col-md-4 col-sm-12 mt-3">
-                      <h5>
+                    <div className="col-lg-7 col-md-12 col-sm-12  mt-3   m-auto ">
+                      <div  className="row">
+                      <p className="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
                         {cart.sheet.courseTitle} ({cart.user.username})
-                      </h5>
-                      <p>
-                        ปี {cart.sheet.year} สาขา {cart.sheet.programme}
                       </p>
-                      <p>
+
+                      <p className="col-lg-3 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
+                        ปี {cart.sheet.year}  สาขา {cart.sheet.programme}
+                      </p>
+
+                      <p className="col-lg-4 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
                         ราคา{" "}
                         {cart.sheet.price.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
@@ -88,9 +93,12 @@ function Cart(props) {
                         })}{" "}
                         itcoin
                       </p>
+                      </div>
+                    </div>
                     </div>
                   </Link>
-                  <div className="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center m-auto">
+                  </div>
+                  <div className="col-lg-2 col-md-12 col-sm-12 d-flex justify-content-center m-auto">
                     <button
                       className="btn btn-outline-secondary"
                       onClick={() => submitDeleteCart(cart._id)}
@@ -98,6 +106,7 @@ function Cart(props) {
                       ลบ
                     </button>
                   </div>
+
                 </div>
                 <hr />
               </div>

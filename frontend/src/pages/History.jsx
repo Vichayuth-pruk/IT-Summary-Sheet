@@ -31,6 +31,8 @@ function History(props) {
     },
   })
 
+
+
   function handleChange(event) {
     setSelect(event.target.value)
     if (event.target.value === "all") {
@@ -109,22 +111,22 @@ function History(props) {
           <br />
           <br />
 
-          <div className="table-responsive-sm d-flex-justify-content-center">
-            <table className="table">
+          <div className="table-responsive-sm  ">
+            <table className="table  align-middle ">
               <thead>
-                <tr>
-                  <th className="text-center">วันที่ทำรายการ</th>
-                  <th className="text-center">หมายเลขคำสั่งซื้อ</th>
-                  <th className="text-center">สถานะ</th>
-                  <th className="text-center">ยอดชำระ</th>
-                  <th className="text-center">ช่องทางชำระเงิน</th>
-                  <th className="text-center">รายการสั่งซื้อ</th>
+                <tr className="text-center" style={{whiteSpace:"nowrap"}}>
+                  <th className="text-center th-sm" >วันที่ทำรายการ</th>
+                  <th className="text-center th-sm" >หมายเลขคำสั่งซื้อ</th>
+                  <th className="text-center th-sm" >สถานะ</th>
+                  <th className="text-center th-sm">ยอดชำระ</th>
+                  <th className="text-center th-sm" >ช่องทางชำระเงิน</th>
+                  <th className="text-center th-sm" >รายการสั่งซื้อ</th>
                 </tr>
               </thead>
               <tbody>
                 {payments.map((item) => {
                   return (
-                    <tr key={item._id}>
+                    <tr key={item._id} className=" text-center ">
                       <td className="text-center">
                         {moment(item.dates).format("LLLL")}
                       </td>
@@ -154,9 +156,12 @@ function History(props) {
               </tbody>
             </table>
           </div>
+
+
         </>
       )}
     </>
+
   )
 }
 
