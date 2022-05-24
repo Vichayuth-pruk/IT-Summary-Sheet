@@ -1,8 +1,11 @@
-import React, { useEffect, useContext, useState } from "react"
+import React, { useEffect, useContext, useState, useCallback } from "react"
 import AuthContext from "../contexts/authContext"
 import isLoggedIn from "../middlewares/isLoggedIn"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import Rating from "@mui/material/Rating"
+import { SHEET_QUERY } from "../graphql/sheetQuery"
+import { useQuery } from "@apollo/client"
+import Spinner from "../components/Spinner"
 
 function Search(props) {
   // Middleware
@@ -10,57 +13,52 @@ function Search(props) {
   const navigate = useNavigate()
   useEffect(() => {
     isLoggedIn(props.meta, me, navigate)
+    refetch()
   }, [])
 
-  const [search, setSearch] = useState("")
+  // State
+  const [srload, setSrload] = useState(false)
+  const [sheets, setSheets] = useState([])
+  const [input, setInput] = useState("")
 
-  function handleChange(event) {
-    setSearch(event.target.value)
+  const [srBy, setSrBy] = useState("courseTitle")
+
+  const { loading, error, data, refetch } = useQuery(SHEET_QUERY, {
+    onCompleted: (data) => {
+      setSheets(data.sheets)
+    },
+  })
+
+  const handleSearch = async () => {
+    let result
+    setSheets([])
+    setSrload(true)
+    if (input === "" || input === undefined) {
+      setSheets(data?.sheets)
+      setSrload(false)
+      return
+    }
+    setTimeout(() => {
+      if (srBy === "courseTitle") {
+        result = data?.sheets.filter(
+          (sheet) => sheet.courseTitle.search(input.toUpperCase()) !== -1
+        )
+      } else if (srBy === "year") {
+        result = data?.sheets.filter((sheet) => sheet.year.search(input) != -1)
+      } else if (srBy === "programme") {
+        result = data?.sheets.filter(
+          (sheet) => sheet.programme.search(input.toUpperCase()) !== -1
+        )
+      }
+      setSrload(false)
+      setSheets(result)
+    }, 300)
   }
+  useEffect(() => {
+    handleSearch()
+  }, [input, srBy])
 
-  let test_data = [
-    {
-      _id: "0",
-      subject: "computer programming",
-      author: "Prakorn TONNY",
-      username: "ZIM",
-      year: "ปี2เทอม1",
-      program: "IT",
-      rating: 5,
-      price: 240,
-    },
-    {
-      _id: "1",
-      subject: "Computer Organization",
-      author: "GUMMY TOKKI",
-      username: "ZAM",
-      year: "ปี2เทอม1",
-      program: "IT",
-      rating: 4.3,
-      price: 170,
-    },
-    {
-      _id: "2",
-      subject: "COMPUTER Vision",
-      author: "DEMMY BASS",
-      username: "DRUM",
-      year: "วิชาเลือก",
-      program: "-",
-      rating: 3.8,
-      price: 210,
-    },
-    {
-      _id: "3",
-      subject: "Requirement Engineer",
-      author: "DEMMY SOURCE",
-      username: "LEAP",
-      year: "ปี2เทอม2",
-      program: "SE",
-      rating: 4.5,
-      price: 310,
-    },
-  ]
-
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">ค้นหาชีท</div>
@@ -74,7 +72,7 @@ function Search(props) {
               type="text"
               className="form-control"
               placeholder="ค้นหาชีท"
-              onChange={handleChange}
+              onChange={(e) => setInput(e.target.value)}
             />
             <span className="input-group-text">
               <i className="fas fa-search"></i>
@@ -86,33 +84,54 @@ function Search(props) {
       <div className="container">
         <button
           type="button"
-          className="btn btn-outline-dark m-1 col-lg-1 col-md-2 col-sm-4"
-        >
-          ทั้งหมด
-        </button>
-        <button
-          type="button"
-          className="btn btn-outline-dark m-1 col-lg-1 col-md-2 col-sm-4"
+          onClick={() => {
+            setSrBy("courseTitle")
+          }}
+          className={
+            "btn m-1 col-lg-1 col-md-2 col-sm-4" +
+            (srBy === "courseTitle" ? " btn-primary" : " btn-outline-primary")
+          }
         >
           วิชา
         </button>
         <button
           type="button"
-          className="btn btn-outline-dark m-1 col-lg-1 col-md-2 col-sm-4"
+          onClick={() => {
+            setSrBy("year")
+          }}
+          className={
+            "btn m-1 col-lg-1 col-md-2 col-sm-4" +
+            (srBy === "year" ? " btn-primary" : " btn-outline-primary")
+          }
         >
           ชั้นปี
         </button>
         <button
           type="button"
-          className="btn btn-outline-dark m-1 col-lg-1 col-md-2 col-sm-4"
+          onClick={() => {
+            setSrBy("programme")
+          }}
+          className={
+            "btn m-1 col-lg-1 col-md-2 col-sm-4" +
+            (srBy === "programme" ? " btn-primary" : " btn-outline-primary")
+          }
         >
-          หลักสูตร
+          สาขา
         </button>
       </div>
-
+      {srload && (
+        <div className="h1 text-center">
+          <br />
+          <br />
+          <br />
+          <div className="spinner-grow text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
       <div className="container m-4">
         <div className="row">
-          {test_data.map((item, index) => {
+          {sheets.map((item, index) => {
             return (
               <div className="col-lg-4" key={index}>
                 <div
@@ -124,15 +143,17 @@ function Search(props) {
                   key={index}
                 >
                   <div className="card-body">
-                    <h5 className="card-title">วิชา {item.subject}</h5>
+                    <h5 className="card-title">วิชา {item.courseTitle}</h5>
                     <h6 className="card-text">
                       โดย{" "}
+                      <Link to={"/shop/" + item.user._id}>
                         <span className="badge rounded-pill bg-primary ">
-                          {item.username}
+                          {item.user.username}
                         </span>
+                      </Link>
                     </h6>
                     <h6 className="card-text">
-                      ปี {item.year} สาขา {item.program}
+                      ปี {item.year} สาขา {item.programme}
                     </h6>
                     <h5 className="card-text text-end fw-bold">
                       ราคา{" "}
@@ -148,17 +169,21 @@ function Search(props) {
                     </h5>
                     <div>
                       <Rating
-                        name="simple-controlled"
-                        defaultValue={3}
-                        precision={item.rating}
+                        name="read-only"
+                        value={
+                          item.comment.reduce((a, b) => a + b.rating, 0) /
+                          item.comment.length
+                        }
                         readOnly
-                        className="mb-3"
+                        precision={0.5}
                       />
                     </div>
                     <div className="d-grid gap-2">
+                      <Link to={"/sheet/" + item._id}>
                         <button type="button" className="btn btn-outline-dark">
                           รายละเอียด
                         </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -166,8 +191,12 @@ function Search(props) {
             )
           })}
         </div>
-
       </div>
+      {sheets.length === 0 && srload === false ? (
+        <div className="text-center">
+          <h3>ไม่มีชีท</h3>
+        </div>
+      ) : null}
     </>
   )
 }

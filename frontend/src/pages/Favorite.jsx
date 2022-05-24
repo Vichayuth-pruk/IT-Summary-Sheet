@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client"
 import { FAVORITE_BY_USERID_QUERY } from "../graphql/favoriteQuery"
 import moment from "moment"
 import Rating from "@mui/material/Rating"
+import Spinner from "../components/Spinner"
 
 function Favorite(props) {
   // Middleware
@@ -25,14 +26,7 @@ function Favorite(props) {
     skip: !me?._id,
   })
 
-  if (loading || data === undefined)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading || data === undefined) return <Spinner />
   return (
     <>
       <div className="h2">

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { PAYMENT_QUERY } from "../graphql/paymentQuery"
 import { useQuery } from "@apollo/client"
 import moment from "moment"
+import Spinner from "../components/Spinner"
 
 function History(props) {
   // Middleware
@@ -30,8 +31,6 @@ function History(props) {
       setPayments(data.payments)
     },
   })
-
-
 
   function handleChange(event) {
     setSelect(event.target.value)
@@ -71,14 +70,7 @@ function History(props) {
     }
   }
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2 text-center">ประวัติการสั่งซื้อของฉัน</div>
@@ -114,13 +106,13 @@ function History(props) {
           <div className="table-responsive-sm  ">
             <table className="table  align-middle ">
               <thead>
-                <tr className="text-center" style={{whiteSpace:"nowrap"}}>
-                  <th className="text-center th-sm" >วันที่ทำรายการ</th>
-                  <th className="text-center th-sm" >หมายเลขคำสั่งซื้อ</th>
-                  <th className="text-center th-sm" >สถานะ</th>
+                <tr className="text-center" style={{ whiteSpace: "nowrap" }}>
+                  <th className="text-center th-sm">วันที่ทำรายการ</th>
+                  <th className="text-center th-sm">หมายเลขคำสั่งซื้อ</th>
+                  <th className="text-center th-sm">สถานะ</th>
                   <th className="text-center th-sm">ยอดชำระ</th>
-                  <th className="text-center th-sm" >ช่องทางชำระเงิน</th>
-                  <th className="text-center th-sm" >รายการสั่งซื้อ</th>
+                  <th className="text-center th-sm">ช่องทางชำระเงิน</th>
+                  <th className="text-center th-sm">รายการสั่งซื้อ</th>
                 </tr>
               </thead>
               <tbody>
@@ -156,12 +148,9 @@ function History(props) {
               </tbody>
             </table>
           </div>
-
-
         </>
       )}
     </>
-
   )
 }
 

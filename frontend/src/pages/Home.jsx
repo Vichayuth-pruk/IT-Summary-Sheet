@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom"
 import Rating from "@mui/material/Rating"
 import { SHEET_QUERY } from "../graphql/sheetQuery"
 import { useQuery } from "@apollo/client"
+import Spinner from "../components/Spinner"
 
 function Home(props) {
   // Middleware
@@ -59,14 +60,7 @@ function Home(props) {
     }
   }
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
 
   return (
     <>

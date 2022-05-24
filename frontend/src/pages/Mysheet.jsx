@@ -5,6 +5,7 @@ import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom"
 import { useQuery } from "@apollo/client"
 import { GET_SHEET_QUERY } from "../graphql/sheetQuery"
 import { GET_USER_QUERY } from "../graphql/userQuery"
+import Spinner from "../components/Spinner"
 
 function Mysheet(props) {
   // Middleware
@@ -87,14 +88,7 @@ function Mysheet(props) {
       },
     })
 
-    if (loading || !mines.user)
-      return (
-        <div className="text-end">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )
+    if (loading || !mines.user) return <Spinner />
     return (
       <>
         <div className="h2 text-center">วิชา {mines.courseTitle}</div>

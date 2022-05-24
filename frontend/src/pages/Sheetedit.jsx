@@ -11,6 +11,7 @@ import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import { UPDATE_SHEET_MUTATION } from "../graphql/sheetMutation"
 import { storage } from "../config/firebase"
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage"
+import Spinner from "../components/Spinner"
 
 const schema = yup
   .object({
@@ -113,14 +114,7 @@ function Sheetedit(props) {
       }
     )
   }
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">แก้ไขชีท</div>

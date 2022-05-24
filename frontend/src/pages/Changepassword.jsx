@@ -9,6 +9,7 @@ import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import { useMutation, useQuery } from "@apollo/client"
 import { ME_QUERY } from "../graphql/meQuery"
 import { CHANGEPASSWORD_MUTATION } from "../graphql/meMutation"
+import Spinner from "../components/Spinner"
 
 const schema = yup
   .object({
@@ -81,7 +82,7 @@ function Changepassword(props) {
       })
     }
   }
-
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">เปลี่ยนรหัสผ่าน</div>

@@ -8,6 +8,7 @@ import { useQuery, useMutation } from "@apollo/client"
 import moment from "moment"
 import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import Rating from "@mui/material/Rating"
+import Spinner from "../components/Spinner"
 
 function Sheetsmanage(props) {
   // Middleware
@@ -55,14 +56,7 @@ function Sheetsmanage(props) {
     })
   }
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
 
   return (
     <>

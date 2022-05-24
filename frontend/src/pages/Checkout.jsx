@@ -6,6 +6,7 @@ import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import { CART_BY_USERID_QUERY } from "../graphql/cartQuery"
 import { PAYMENT_MUTATION } from "../graphql/paymentMutation"
 import { useQuery, useMutation } from "@apollo/client"
+import Spinner from "../components/Spinner"
 
 function Checkout(props) {
   // Middleware
@@ -98,14 +99,7 @@ function Checkout(props) {
       }
     })
   }
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">ชำระเงิน</div>

@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client"
 import { SHEET_BY_USERID_QUERY } from "../graphql/sheetQuery"
 import { GET_USER_QUERY } from "../graphql/userQuery"
 import Rating from "@mui/material/Rating"
+import Spinner from "../components/Spinner"
 
 function Shop(props) {
   // Middleware
@@ -49,14 +50,7 @@ function Shop(props) {
     }, 300)
   }
 
-  if (loading || userRes.loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading || userRes.loading) return <Spinner />
   return (
     <>
       <div className="h2">

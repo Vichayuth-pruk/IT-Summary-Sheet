@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom"
 import Rating from "@mui/material/Rating"
 import { useQuery } from "@apollo/client"
 import { COMMENT_QUERY } from "../graphql/commentQuery"
+import Spinner from "../components/Spinner"
 
 function Myreview(props) {
   // Middleware
@@ -25,14 +26,7 @@ function Myreview(props) {
     skip: !me?._id,
   })
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">รีวิวของฉัน</div>

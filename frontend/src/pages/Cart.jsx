@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { CART_BY_USERID_QUERY } from "../graphql/cartQuery"
 import { DELETE_CART_MUTATION } from "../graphql/cartMutation"
 import { useQuery, useMutation } from "@apollo/client"
+import Spinner from "../components/Spinner"
 
 function Cart(props) {
   // Middleware
@@ -37,14 +38,7 @@ function Cart(props) {
     }
   }
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">
@@ -66,37 +60,37 @@ function Cart(props) {
               <div key={cart._id}>
                 <div className="row m-4">
                   <div className="col-lg-10 col-md-12 col-sm-12  m-auto">
-                  <Link
-                    to={"/sheet/" + cart.sheet._id}
-                    className="text-dark"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <div className="row m-1">
-                    <div className="col-lg-1 col-md-12 col-sm-12 d-flex justify-content-center  m-auto">
-                      <i className="fa-solid fa-file-lines fa-3x"></i>
-                    </div>
-                    <div className="col-lg-7 col-md-12 col-sm-12  mt-3   m-auto ">
-                      <div  className="row">
-                      <p className="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
-                        {cart.sheet.courseTitle} ({cart.user.username})
-                      </p>
+                    <Link
+                      to={"/sheet/" + cart.sheet._id}
+                      className="text-dark"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div className="row m-1">
+                        <div className="col-lg-1 col-md-12 col-sm-12 d-flex justify-content-center  m-auto">
+                          <i className="fa-solid fa-file-lines fa-3x"></i>
+                        </div>
+                        <div className="col-lg-7 col-md-12 col-sm-12  mt-3   m-auto ">
+                          <div className="row">
+                            <p className="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
+                              {cart.sheet.courseTitle} ({cart.user.username})
+                            </p>
 
-                      <p className="col-lg-3 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
-                        ปี {cart.sheet.year}  สาขา {cart.sheet.programme}
-                      </p>
+                            <p className="col-lg-3 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
+                              ปี {cart.sheet.year} สาขา {cart.sheet.programme}
+                            </p>
 
-                      <p className="col-lg-4 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
-                        ราคา{" "}
-                        {cart.sheet.price.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}{" "}
-                        itcoin
-                      </p>
+                            <p className="col-lg-4 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
+                              ราคา{" "}
+                              {cart.sheet.price.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}{" "}
+                              itcoin
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    </div>
-                  </Link>
+                    </Link>
                   </div>
                   <div className="col-lg-2 col-md-12 col-sm-12 d-flex justify-content-center m-auto">
                     <button
@@ -106,7 +100,6 @@ function Cart(props) {
                       ลบ
                     </button>
                   </div>
-
                 </div>
                 <hr />
               </div>

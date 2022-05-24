@@ -57,13 +57,7 @@ function App() {
   })
 
   if (loading || favoriteByUserId.loading || cartByUserId.loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+    return <div></div>
   return (
     <>
       <AuthContext.Provider value={data?.me}>

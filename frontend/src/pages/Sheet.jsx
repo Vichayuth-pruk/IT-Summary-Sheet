@@ -16,6 +16,7 @@ import * as yup from "yup"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { COMMENT_MUTATION } from "../graphql/commentMutation"
+import Spinner from "../components/Spinner"
 
 const schema = yup
   .object({
@@ -43,6 +44,7 @@ function Sheet(props) {
 
   // State
   const [isCommented, setIsCommented] = useState(false)
+  const [off, setOff] = useState(false)
   const { loading, error, data, refetch } = useQuery(GET_SHEET_QUERY, {
     variables: {
       sheetId: id,
@@ -100,6 +102,7 @@ function Sheet(props) {
 
   const [createCart] = useMutation(CART_MUTATION)
   const submitCart = async () => {
+    setOff(true)
     try {
       const userId = me._id
       const sheetId = data.sheetId._id
@@ -139,6 +142,7 @@ function Sheet(props) {
         time: 1500,
       })
     }
+    setOff(false)
   }
 
   const isBuyed = () => me.mines.some((m) => m._id === id)
@@ -211,14 +215,7 @@ function Sheet(props) {
     )
   }
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2 text-center mb-3">วิชา {data.sheetId.courseTitle}</div>
@@ -270,7 +267,7 @@ function Sheet(props) {
                   <button
                     className={
                       "btn btn-success " +
-                      (data.sheetId.userId === me?._id ? "disabled" : "")
+                      (data.sheetId.userId === me?._id || off ? "disabled" : "")
                     }
                     onClick={() => submitCart()}
                   >

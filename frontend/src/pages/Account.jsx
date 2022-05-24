@@ -9,6 +9,7 @@ import Swal from "sweetalert2/dist/sweetalert2.all.min.js"
 import { useMutation, useQuery } from "@apollo/client"
 import { ME_MUTATION } from "../graphql/meMutation"
 import { ME_QUERY } from "../graphql/meQuery"
+import Spinner from "../components/Spinner"
 
 const schema = yup
   .object({
@@ -73,14 +74,7 @@ function Account(props) {
     }
   }
 
-  if (loading)
-    return (
-      <div className="text-end">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    )
+  if (loading) return <Spinner />
   return (
     <>
       <div className="h2">จัดการบัญชี</div>
