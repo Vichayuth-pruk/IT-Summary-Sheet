@@ -116,6 +116,7 @@ function Sheet(props) {
           icon: "warning",
           confirmButtonText: "ตกลง",
         })
+        setOff(false)
         return
       }
       await createCart({
