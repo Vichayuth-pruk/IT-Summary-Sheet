@@ -45,6 +45,7 @@ function Sheet(props) {
   // State
   const [isCommented, setIsCommented] = useState(false)
   const [off, setOff] = useState(false)
+  const [offFav, setOffFav] = useState(false)
   const { loading, error, data, refetch } = useQuery(GET_SHEET_QUERY, {
     variables: {
       sheetId: id,
@@ -64,6 +65,7 @@ function Sheet(props) {
   const [createFavorite] = useMutation(FAVORITE_MUTATION)
   const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION)
   const submitFavorite = async () => {
+    setOffFav(true)
     try {
       const userId = me._id
       const sheetId = data.sheetId._id
@@ -89,6 +91,7 @@ function Sheet(props) {
       }
       await props.fav()
       await refetch()
+      setOffFav(false)
     } catch (error) {
       console.log(error)
       Swal.fire({
@@ -226,24 +229,30 @@ function Sheet(props) {
         style={{ borderRadius: 10 }}
       >
         <div className="text-end me-3" style={{ fontSize: 24 }}>
-          {data.sheetId.favorite.some((f) => f.userId === me._id) ? (
-            <i
-              className={
-                "fa-solid text-danger fa-lg fa-heart" +
-                (data.sheetId.userId === me?._id || isBuyed() ? "d-none" : "")
-              }
-              onClick={submitFavorite}
-              style={{ cursor: "pointer" }}
-            />
+          {!offFav ? (
+            data.sheetId.favorite.some((f) => f.userId === me._id) ? (
+              <i
+                className={
+                  "fa-solid text-danger fa-lg fa-heart" +
+                  (data.sheetId.userId === me?._id || isBuyed() ? "d-none" : "")
+                }
+                onClick={submitFavorite}
+                style={{ cursor: "pointer" }}
+              />
+            ) : (
+              <i
+                className={
+                  "fa-regular fa-lg fa-heart" +
+                  (data.sheetId.userId === me?._id || isBuyed() ? "d-none" : "")
+                }
+                style={{ cursor: "pointer" }}
+                onClick={submitFavorite}
+              />
+            )
           ) : (
-            <i
-              className={
-                "fa-regular fa-lg fa-heart" +
-                (data.sheetId.userId === me?._id || isBuyed() ? "d-none" : "")
-              }
-              style={{ cursor: "pointer" }}
-              onClick={submitFavorite}
-            />
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
           )}
         </div>
         <div className="row m-auto">
