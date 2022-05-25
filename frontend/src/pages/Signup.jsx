@@ -89,7 +89,7 @@ function Signup(props) {
       <br />
       <br />
       <div className="col-lg-6 col-md-8 col-sm-12 m-auto">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form data-testid="signup-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label className="form-label">อีเมล</label>
             <input

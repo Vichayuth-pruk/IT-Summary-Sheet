@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "vite preview --host",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^3.6.2",
@@ -32,6 +33,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^1.3.0",
+    "cypress": "^9.7.0",
     "prettier": "2.6.2",
     "vite": "^2.9.9"
   }
