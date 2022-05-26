@@ -12,5 +12,5 @@ A web application that can be an intermediary for freely exchanging the summary 
 | ------------ | ------------ | ------------ |
 | [@maurelle](https://github.com/maurelle) |  |  62070124 |
 | [@Vichayuth](https://github.com/Vichayuth) | Vichayuth Tavichaiyuth |  62070168 |
-| [@aomsk](https://github.com/aomsk) |  | 62070196 |
+| [@aomsk](https://github.com/aomsk) | Sipang Klinhom | 62070196 |
 | [@docxed](https://github.com/docxed) | Akira Seesanyong |  62070215 |
