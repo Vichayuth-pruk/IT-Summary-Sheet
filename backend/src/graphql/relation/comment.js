@@ -22,6 +22,7 @@ CommentTC.addFields({
   dates: {
     type: "String",
     projection: { createdAt: true },
-    resolve: (comment) => `${moment(comment.createdAt).format("LLLL")}`,
+    resolve: (comment) =>
+      `${moment(comment.createdAt).utcOffset("+07:00").format("LLLL")}`,
   },
 })
