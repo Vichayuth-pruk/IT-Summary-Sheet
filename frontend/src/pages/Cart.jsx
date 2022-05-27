@@ -72,7 +72,8 @@ function Cart(props) {
                         <div className="col-lg-7 col-md-12 col-sm-12  mt-3   m-auto ">
                           <div className="row">
                             <p className="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
-                              {cart.sheet.courseTitle} ({cart.user.username})
+                              {cart.sheet.courseTitle} (
+                              {cart.sheet.user.username})
                             </p>
 
                             <p className="col-lg-3 col-md-12 col-sm-12 d-flex justify-content-center text-center  m-auto">
